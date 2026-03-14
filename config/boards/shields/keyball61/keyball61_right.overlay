@@ -109,10 +109,27 @@
     };
 };
 
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
 / {
+  input_processors {
+    zip_scroll_swap_mapper: zip_scroll_swap_mapper {
+      compatible = "zmk,input-processor-code-mapper";
+      #input-processor-cells = <0>;
+      type = <INPUT_EV_REL>;
+      map = <INPUT_REL_WHEEL INPUT_REL_HWHEEL
+             INPUT_REL_HWHEEL INPUT_REL_WHEEL>;
+    };
+  };
+
   trackball_listener {
     compatible = "zmk,input-listener";
     device = <&trackball>;
 
+    /* Swap scroll axes so left/right trackball movement scrolls up/down */
+    scroll_layer_config {
+      layers = <5>;
+      input-processors = <&zip_scroll_swap_mapper>;
+    };
   };
 };
