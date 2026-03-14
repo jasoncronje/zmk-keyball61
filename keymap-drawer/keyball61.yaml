@@ -1,6 +1,6 @@
 layout: {zmk_keyboard: keyball61}
 layers:
-  QWRT:
+  MAIN:
   - $$mdi:keyboard-esc$$
   - {t: '1', s: '!'}
   - {t: '2', s: '@'}
@@ -58,11 +58,11 @@ layers:
   - $$mdi:apple-keyboard-command$$
   - {t: '$$mdi:backspace$$', type: backspace}
   - {t: '$$mdi:keyboard-return$$', type: enter}
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - {t: '$$mdi:keyboard-space$$', h: FUN}
+  - {t: SYMBOL, h: toggle}
+  - {t: '$$mdi:keyboard-space$$', h: FUNCTION}
   - $$mdi:apple-keyboard-option$$
   - $$mdi:backspace-reverse-outline$$
-  SYM:
+  SYMBOL:
   - {t: '$$mdi:transfer$$', type: trans}
   - '!'
   - '@'
@@ -124,7 +124,7 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  FUN:
+  FUNCTION:
   - {t: '$$mdi:transfer$$', type: trans}
   - F1
   - F2
@@ -245,7 +245,7 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - FUN
+  - FUNCTION
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
   SCROLL:
