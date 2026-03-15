@@ -29,17 +29,25 @@
         lshift_scroll: lshift_scroll {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press &mo 4 &kp LEFT_SHIFT>
-                     , <&macro_pause_for_release>
-                     , <&macro_release &mo 4 &kp LEFT_SHIFT>;
+            bindings =
+                <&macro_press>,
+                <&mo 4 &kp LEFT_SHIFT>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 4 &kp LEFT_SHIFT>;
         };
+
         rshift_scroll: rshift_scroll {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press &mo 4 &kp RIGHT_SHIFT>
-                     , <&macro_pause_for_release>
-                     , <&macro_release &mo 4 &kp RIGHT_SHIFT>;
+            bindings =
+                <&macro_press>,
+                <&mo 4 &kp RIGHT_SHIFT>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 4 &kp RIGHT_SHIFT>;
         };
+
         code_block: code_block {
             compatible = "zmk,behavior-macro-one-param";
             #binding-cells = <1>;
@@ -108,17 +116,6 @@
 
         scroll_layer {
             label = "SCROLL";
-            bindings = <
-&trans           &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
-&trans           &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
-&trans           &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
-&trans           &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
-&trans           &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans
-            >;
-        };
-
-        snipe_layer {
-            label = "SNIPE";
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
