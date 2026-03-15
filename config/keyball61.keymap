@@ -29,21 +29,31 @@
         lshift_scroll: lshift_scroll {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press &mo 4 &kp LEFT_SHIFT>,
-                       <&macro_pause_for_release>,
-                       <&macro_release &mo 4 &kp LEFT_SHIFT>;
+            bindings =
+                <&macro_press>,
+                <&mo 4 &kp LEFT_SHIFT>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 4 &kp LEFT_SHIFT>;
         };
+
         rshift_scroll: rshift_scroll {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press &mo 4 &kp RIGHT_SHIFT>,
-                       <&macro_pause_for_release>,
-                       <&macro_release &mo 4 &kp RIGHT_SHIFT>;
+            bindings =
+                <&macro_press>,
+                <&mo 4 &kp RIGHT_SHIFT>,
+                <&macro_pause_for_release>,
+                <&macro_release>,
+                <&mo 4 &kp RIGHT_SHIFT>;
         };
+
         code_block: code_block {
             compatible = "zmk,behavior-macro-one-param";
             #binding-cells = <1>;
-            bindings = <&macro_tap &kp GRAVE &kp GRAVE &kp GRAVE &kp ENTER &kp ENTER &kp GRAVE &kp GRAVE &kp GRAVE &kp UP>;
+            bindings =
+                <&macro_tap>,
+                <&kp GRAVE &kp GRAVE &kp GRAVE &kp ENTER &kp ENTER &kp GRAVE &kp GRAVE &kp GRAVE &kp UP>;
         };
     };
 
@@ -63,11 +73,11 @@
         default_layer {
             label = "MAIN";
             bindings = <
-&esc_code 0 ESC   &kp N1     &kp N2            &kp N3        &kp N4            &kp N5                                       &kp N6       &kp N7  &kp N8     &kp N9   &kp N0         &kp BSPC
-&kp TAB           &kp Q      &kp W             &kp E         &kp R             &kp T                                        &kp Y        &kp U   &kp I      &kp O    &kp P          &kp BACKSLASH
-&kp CAPS          &kp A      &kp S             &kp D         &kp F             &kp G                                        &kp H        &kp J   &kp K      &kp L    &kp SEMI       &kp SQT
-&lshift_scroll    &kp Z      &kp X             &kp C         &kp V             &kp B          &lt 3 PAGE_DOWN  &kp PAGE_UP  &kp N        &kp M   &kp COMMA  &kp DOT  &kp FSLH       &rshift_scroll
-&mo 4             &kp LCTRL  &kp LEFT_CONTROL  &kp LEFT_ALT  &kp LEFT_COMMAND  &kp BACKSPACE  &kp ENTER        &mo 1        &lt 2 SPACE                              &kp RIGHT_ALT  &kp DELETE
+&esc_code 0 ESC  &kp N1     &kp N2            &kp N3        &kp N4            &kp N5                                       &kp N6       &kp N7  &kp N8     &kp N9   &kp N0         &kp BSPC
+&kp TAB          &kp Q      &kp W             &kp E         &kp R             &kp T                                        &kp Y        &kp U   &kp I      &kp O    &kp P          &kp BACKSLASH
+&kp CAPS         &kp A      &kp S             &kp D         &kp F             &kp G                                        &kp H        &kp J   &kp K      &kp L    &kp SEMI       &kp SQT
+&lshift_scroll   &kp Z      &kp X             &kp C         &kp V             &kp B          &lt 3 PAGE_DOWN  &kp PAGE_UP  &kp N        &kp M   &kp COMMA  &kp DOT  &kp FSLH       &rshift_scroll
+&mo 4            &kp LCTRL  &kp LEFT_CONTROL  &kp LEFT_ALT  &kp LEFT_COMMAND  &kp BACKSPACE  &kp ENTER        &mo 1        &lt 2 SPACE                              &kp RIGHT_ALT  &kp DELETE
             >;
         };
 
@@ -96,11 +106,11 @@
         mouse_layer {
             label = "MOUSE";
             bindings = <
-&trans  &trans    &trans    &trans  &trans     &trans                  &trans         &trans     &trans     &trans     &trans  &trans
-&trans  &trans    &trans    &trans  &trans     &trans                  &trans         &trans     &trans     &trans     &trans  &trans
-&trans  &kp LEFT  &kp DOWN  &kp UP  &kp RIGHT  &trans                  &kp PAGE_UP    &mkp LCLK  &mkp MCLK  &mkp RCLK  &trans  &trans
-&trans  &trans    &trans    &trans  &trans     &trans  &trans  &trans  &kp PAGE_DOWN  &trans     &trans     &trans     &trans  &trans
-&trans  &trans    &trans    &trans  &trans     &trans  &trans  &trans  &none                                           &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans         &trans     &trans     &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans         &trans     &trans     &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &kp PAGE_UP    &mkp LCLK  &mkp MCLK  &mkp RCLK  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &kp PAGE_DOWN  &trans     &trans     &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &none                                           &trans  &trans
             >;
         };
 
