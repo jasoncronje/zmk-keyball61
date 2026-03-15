@@ -49,11 +49,9 @@
         };
 
         code_block: code_block {
-            compatible = "zmk,behavior-macro-one-param";
-            #binding-cells = <1>;
-            bindings =
-                <&macro_tap>,
-                <&kp GRAVE &kp GRAVE &kp GRAVE &kp ENTER &kp ENTER &kp GRAVE &kp GRAVE &kp GRAVE &kp UP>;
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp GRAVE &kp GRAVE &kp GRAVE &kp ENTER &kp ENTER &kp GRAVE &kp GRAVE &kp GRAVE &kp UP>;
         };
     };
 
@@ -64,6 +62,12 @@
             tapping-term-ms = <200>;
             bindings = <&rshift_scroll>, <&kp CAPS>;
         };
+        td_esc_code: td_esc_code {
+            compatible = "zmk,behavior-tap-dance";
+            #binding-cells = <0>;
+            tapping-term-ms = <200>;
+            bindings = <&kp ESC>, <&code_block>;
+        };
     };
 
     keymap {
@@ -72,10 +76,10 @@
         default_layer {
             label = "MAIN";
             bindings = <
-&esc_code 0 ESC  &kp N1     &kp N2            &kp N3        &kp N4            &kp N5                                       &kp N6       &kp N7  &kp N8     &kp N9   &kp N0         &kp BSPC
+&td_esc_code      &kp N1     &kp N2            &kp N3        &kp N4            &kp N5                                       &kp N6       &kp N7  &kp N8     &kp N9   &kp N0         &kp BSPC
 &kp TAB          &kp Q      &kp W             &kp E         &kp R             &kp T                                        &kp Y        &kp U   &kp I      &kp O    &kp P          &kp BACKSLASH
 &none            &kp A      &kp S             &kp D         &kp F             &kp G                                        &kp H        &kp J   &kp K      &kp L    &kp SEMI       &kp SQT
-&lshift_scroll   &kp Z      &kp X             &kp C         &kp V             &kp B          &lt 3 PAGE_DOWN  &kp PAGE_UP  &kp N        &kp M   &kp COMMA  &kp DOT  &kp FSLH       &rshift_scroll
+&lshift_scroll   &kp Z      &kp X             &kp C         &kp V             &kp B          &lt 3 PAGE_DOWN  &kp PAGE_UP  &kp N        &kp M   &kp COMMA  &kp DOT  &kp FSLH       &td_rshift_caps
 &none            &kp LCTRL  &kp LEFT_CONTROL  &kp LEFT_ALT  &kp LEFT_COMMAND  &kp BACKSPACE  &lt 4 ENTER      &mo 2        &lt 1 SPACE                              &kp RIGHT_ALT  &kp DELETE
             >;
         };
