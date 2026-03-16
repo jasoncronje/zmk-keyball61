@@ -117,8 +117,8 @@
             label = "MOUSE";
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &trans     &trans     &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &trans     &trans     &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &mkp LCLK  &mkp MCLK  &mkp RCLK  &mo 4   &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &mo 4      &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &mkp LCLK  &mkp MCLK  &mkp RCLK  &none   &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans     &trans     &trans     &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                                   &trans  &trans
             >;
