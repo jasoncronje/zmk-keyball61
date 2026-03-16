@@ -4,6 +4,7 @@
 #define MOUSE   3 // Auto-Mouse Layer
 #define SCROLL  4 // Motion Scroll Layer
 #define SNIPE   5 // Snipe Mode Layer
+#define CARET   6 // Caret/Text Cursor Mode Layer
 
 #include <behaviors/mouse_keys.dtsi>
 #include <dt-bindings/zmk/mouse.h>
@@ -117,7 +118,7 @@
             label = "MOUSE";
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &trans     &trans     &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &mo 4      &trans     &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &mo 4      &mo 6      &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &mkp LCLK  &mkp MCLK  &mkp RCLK  &none   &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans     &trans     &trans     &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                                   &trans  &trans
@@ -132,6 +133,17 @@
 &trans  &trans  &trans  &trans  &trans  &trans                              &kp LEFT  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &kp PAGE_DOWN  &kp PAGE_UP  &trans    &trans          &trans        &trans           &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans         &trans       &trans                                                   &trans  &trans
+            >;
+        };
+
+        caret_layer {
+            label = "CARET";
+            bindings = <
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                          &trans  &trans
             >;
         };
     };
