@@ -6,7 +6,7 @@ ZMK firmware configuration for the Keyball61 split keyboard with integrated trac
 
 - **Home row mods** (CAGS order) with cross-hand activation for macOS
 - **Miryoku-inspired symbol layer** with brackets on home row
-- **Auto-mouse layer** with trackball movement detection and configurable deadzone
+- **Auto-mouse layer** via `zip_temp_layer` with excluded click positions and idle detection
 - **Scroll layer** with arrow keys and page navigation
 
 ## Keymap
@@ -18,10 +18,10 @@ ZMK firmware configuration for the Keyball61 split keyboard with integrated trac
 This config diverges significantly from the original [Amos698](https://github.com/Amos698) base:
 
 - **ZMK v0.3.0** — upgraded from v0.2 for module support and input processors
-- **PMW3610 trackball driver** — switched to [kumamuk-git/zmk-pmw3610-driver](https://github.com/kumamuk-git/zmk-pmw3610-driver) with SPI configuration, input splitting, auto-mouse layer, scroll layer, and movement threshold tuning
-- **OLED displays** — integrated [zmk-nice-oled](https://github.com/mctechnology17/zmk-nice-oled) module for vertical OLEDs with battery percentage, tuned sleep and performance settings
+- **PMW3610 trackball driver** — switched to [kumamuk-git/zmk-pmw3610-driver](https://github.com/kumamuk-git/zmk-pmw3610-driver) with SPI configuration and scroll layer support
+- **Auto-mouse via `zip_temp_layer`** — replaced driver-level automouse with ZMK's native input processor for excluded click positions and typing idle detection
+- **OLED displays** — integrated [zmk-nice-oled](https://github.com/mctechnology17/zmk-nice-oled) module for vertical OLEDs with battery percentage and sleep settings
 - **BLE optimization** — lower latency settings tuned for split keyboard communication
-- **Zettaface ZMK fork** — temporarily used to fix input processor bugs (since reverted)
 
 ## Build
 
