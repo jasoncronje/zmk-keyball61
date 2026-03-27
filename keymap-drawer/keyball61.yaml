@@ -26,16 +26,16 @@ layers:
   - P
   - {t: \, s: '|'}
   - SCROLL
-  - {t: A, h: '$$mdi:apple-keyboard-control$$'}
-  - {t: S, h: '$$mdi:apple-keyboard-option$$'}
-  - {t: D, h: LGUI}
-  - {t: F, h: '$$mdi:apple-keyboard-shift$$'}
+  - {t: A, s: '$$mdi:apple-keyboard-control$$'}
+  - {t: S, s: '$$mdi:apple-keyboard-option$$'}
+  - {t: D, s: '$$mdi:apple-keyboard-command$$'}
+  - {t: F, s: '$$mdi:apple-keyboard-shift$$'}
   - G
   - H
-  - {t: J, h: '$$mdi:apple-keyboard-shift$$'}
-  - {t: K, h: RGUI}
-  - {t: L, h: '$$mdi:apple-keyboard-option$$'}
-  - {t: ;, h: '$$mdi:apple-keyboard-control$$', s: ':'}
+  - {t: J, s: '$$mdi:apple-keyboard-shift$$'}
+  - {t: K, s: '$$mdi:apple-keyboard-command$$'}
+  - {t: L, s: '$$mdi:apple-keyboard-option$$'}
+  - {t: ;, s: '$$mdi:apple-keyboard-control$$'}
   - {t: '''', s: '"'}
   - $$mdi:apple-keyboard-shift$$
   - Z
@@ -281,7 +281,7 @@ layers:
   - {t: '$$mdi:transfer$$', type: trans}
   - $$mdi:arrow-left-bold$$
   - $$mdi:arrow-down-bold$$
-  - {t: '$$mdi:arrow-up-bold$$', type: held alternate}
+  - $$mdi:arrow-up-bold$$
   - $$mdi:arrow-right-bold$$
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
