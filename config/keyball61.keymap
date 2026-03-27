@@ -40,17 +40,6 @@
 
 / {
     macros {
-        lshift_scroll: lshift_scroll {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings =
-                <&macro_press>,
-                <&mo 4 &kp LEFT_SHIFT>,
-                <&macro_pause_for_release>,
-                <&macro_release>,
-                <&mo 4 &kp LEFT_SHIFT>;
-        };
-
         lock_screen: lock_screen {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -62,27 +51,9 @@
                 <&macro_release>,
                 <&kp LCTRL &kp LCMD>;
         };
-
-        rshift_scroll: rshift_scroll {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings =
-                <&macro_press>,
-                <&mo 4 &kp RIGHT_SHIFT>,
-                <&macro_pause_for_release>,
-                <&macro_release>,
-                <&mo 4 &kp RIGHT_SHIFT>;
-        };
     };
 
     behaviors {
-        td_rshift_caps: td_rshift_caps {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&rshift_scroll>, <&kp CAPS>;
-        };
-
         td_bt_clr: td_bt_clr {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
