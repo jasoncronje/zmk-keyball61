@@ -62,9 +62,7 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio1 11 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-        automouse-layer = <3>;
 	scroll-layers = <4>;
-	snipe-layers = <5>;
     };
 };
 
@@ -120,11 +118,19 @@
       map = <INPUT_REL_WHEEL INPUT_REL_HWHEEL
              INPUT_REL_HWHEEL INPUT_REL_WHEEL>;
     };
+
+    zip_temp_layer: zip_temp_layer {
+      compatible = "zmk,input-processor-temp-layer";
+      #input-processor-cells = <2>;
+      require-prior-idle-ms = <150>;
+      excluded-positions = <31 32 33>;
+    };
   };
 
   trackball_listener {
     compatible = "zmk,input-listener";
     device = <&trackball>;
+    input-processors = <&zip_temp_layer 3 700>;
 
     scroll_layer_config {
       layers = <4>;
