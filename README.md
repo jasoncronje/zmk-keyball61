@@ -1,6 +1,8 @@
 # Keyball61 ZMK Config
 
-A heavily customized ZMK firmware for the wireless [Keyball61](https://github.com/Yowkees/keyball) — a 61-key split ortho with an integrated 34mm trackball — running over BLE and tuned for macOS. This repo is specifically for **BLE / ZMK** builds; if you're running the wired QMK variant, the upstream [Yowkees/keyball](https://github.com/Yowkees/keyball) project is where you want to be. Published because the info was scattered when I started and someone else shouldn't have to piece it together from scratch.
+A heavily customized ZMK firmware for the wireless [Keyball61](https://github.com/Yowkees/keyball), a 61-key split ortho with an integrated 34mm trackball, running over BLE and tuned for macOS. This repo is specifically for **BLE / ZMK** builds. If you're running the wired QMK variant, the upstream [Yowkees/keyball](https://github.com/Yowkees/keyball) project is where you want to be. Published because the info was scattered when I started and someone else shouldn't have to piece it together from scratch.
+
+> **Note:** This is my personal config, shared as a reference rather than a turnkey distribution. You're encouraged to fork it, rip out what you don't want, and build your own.
 
 <details>
 <summary>View keymap</summary>
@@ -11,19 +13,21 @@ A heavily customized ZMK firmware for the wireless [Keyball61](https://github.co
 
 ## How I Got Here
 
-I came to the Keyball61 from an [Ultimate Hacking Keyboard](https://ultimatehackingkeyboard.com). The UHK sold me on split ergo and thumb-mounted trackballs — both non-negotiable now — but it was heavy, bulky, and the trackball was a bolt-on module instead of a first-class part of the keyboard. The Keyball61 is the keyboard I was actually looking for: integrated trackball, ortho-linear, wireless, light. The adjustment period was real, but once the muscle memory caught up I wasn't going back.
+I came to the Keyball61 from a [UHK 60](https://uhk.io/uhk60). The UHK 60 sold me on split ergo and thumb-mounted trackballs, both non-negotiable now, but it was heavy, bulky, and the trackball was a bolt-on module instead of a first-class part of the keyboard. The Keyball61 is the keyboard I was actually looking for: integrated trackball, ortho-linear, wireless, light. The adjustment period was real, but once the muscle memory caught up I wasn't going back.
 
-## What's Different From Upstream
+## Customizations
 
-- **ZMK v0.3.0** — upgraded from v0.2 for module support and input processors
-- **PMW3610 trackball driver** — [kumamuk-git/zmk-pmw3610-driver](https://github.com/kumamuk-git/zmk-pmw3610-driver) with SPI + scroll layer support
-- **Native auto-mouse** — `zip_temp_layer` input processor instead of driver-level automouse; excludes click positions, respects typing idle
-- **OLEDs** — [zmk-nice-oled](https://github.com/mctechnology17/zmk-nice-oled) module, vertical layout, battery % + sleep
-- **BLE tuned** — lower latency intervals for split communication
+- **ZMK v0.3.0**: upgraded from v0.2 for module support and input processors.
+- **PMW3610 trackball driver**: [kumamuk-git/zmk-pmw3610-driver](https://github.com/kumamuk-git/zmk-pmw3610-driver) with SPI and scroll layer support.
+- **Native auto-mouse**: `zip_temp_layer` input processor instead of driver-level automouse. Excludes click positions, respects typing idle.
+- **OLEDs**: [zmk-nice-oled](https://github.com/mctechnology17/zmk-nice-oled) module, vertical layout, battery % and sleep.
+- **BLE tuned**: lower latency intervals for split communication.
 
 ## Hardware Mods
 
-Beyond firmware, I've also upgraded the batteries and printed my own cases. STLs, BOM, and notes will land in this repo (or a companion one) — coming soon.
+Beyond firmware, I've also upgraded the batteries and printed my own cases. STLs, BOM, and notes will land in this repo (or a companion one), coming soon.
+
+![My Keyball61 build](docs/MyBuild.jpeg)
 
 ## Build
 
@@ -31,4 +35,4 @@ Firmware builds automatically via GitHub Actions on push to `main`, and the keym
 
 ## Attribution
 
-Forked originally from [tangbonze/zmk-config-Keyball61](https://github.com/tangbonze/zmk-config-Keyball61), which builds on firmware by [Amos698](https://github.com/Amos698). PCB by [yangxing844](https://github.com/yangxing844), case by [delock](https://github.com/delock). Hardware and base-firmware credit belongs to them — this repo has since diverged and is maintained independently.
+Forked originally from [tangbonze/zmk-config-Keyball61](https://github.com/tangbonze/zmk-config-Keyball61), which builds on firmware by [Amos698](https://github.com/Amos698).
