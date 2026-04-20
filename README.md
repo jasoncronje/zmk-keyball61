@@ -1,6 +1,6 @@
 # Keyball61 ZMK Config
 
-A heavily customized ZMK firmware for the [Keyball61](https://github.com/yangxing844) — a 61-key split ortho with an integrated 34mm trackball — tuned for macOS and my own fingers. Published because the info was scattered when I started and someone else shouldn't have to piece it together from scratch.
+A heavily customized ZMK firmware for the wireless [Keyball61](https://github.com/Yowkees/keyball) — a 61-key split ortho with an integrated 34mm trackball — running over BLE and tuned for macOS. This repo is specifically for **BLE / ZMK** builds; if you're running the wired QMK variant, the upstream [Yowkees/keyball](https://github.com/Yowkees/keyball) project is where you want to be. Published because the info was scattered when I started and someone else shouldn't have to piece it together from scratch.
 
 <details>
 <summary>View keymap</summary>
