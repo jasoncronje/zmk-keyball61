@@ -58,7 +58,7 @@
             bindings =
                 <&macro_tap>,
                 <&kp GRAVE>, <&kp GRAVE>, <&kp GRAVE>,
-                <&kp ENTER>, <&kp ENTER>,
+                <&kp LS(ENTER)>, <&kp LS(ENTER)>,
                 <&kp GRAVE>, <&kp GRAVE>, <&kp GRAVE>,
                 <&kp UP_ARROW>;
         };
