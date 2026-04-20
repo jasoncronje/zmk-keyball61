@@ -1,8 +1,8 @@
 # Keyball61 ZMK Config
 
-A heavily customized ZMK firmware for the wireless [Keyball61](https://github.com/Yowkees/keyball), a 61-key split ortho with an integrated 34mm trackball, running over BLE and tuned for macOS. This repo is specifically for **BLE / ZMK** builds. If you're running the wired QMK variant, the upstream [Yowkees/keyball](https://github.com/Yowkees/keyball) project is where you want to be. Published because the info was scattered when I started and someone else shouldn't have to piece it together from scratch.
+A heavily customized ZMK firmware for the wireless [Keyball61](https://github.com/Yowkees/keyball), a 61-key split ortho with an integrated 34mm trackball, running over BLE and tuned for macOS. This repo is specifically for **BLE / ZMK** builds. If you're running the wired QMK variant, take a look at: [Yowkees/keyball](https://github.com/Yowkees/keyball).
 
-> **Note:** This is my personal config, shared as a reference rather than a turnkey distribution. You're encouraged to fork it, rip out what you don't want, and build your own.
+> **Note:** This is my personal config, you can use as is or fork to tweak things to your liking.
 
 ## My Keymap
 
@@ -15,15 +15,15 @@ A heavily customized ZMK firmware for the wireless [Keyball61](https://github.co
 
 ## How I Got Here
 
-I came to the Keyball61 from a [UHK 60](https://uhk.io/uhk60). The UHK 60 sold me on split ergo and thumb-mounted trackballs, both non-negotiable now, but it was heavy, bulky, and the trackball was a bolt-on module instead of a first-class part of the keyboard. The Keyball61 is the keyboard I was actually looking for: integrated trackball, ortho-linear, wireless, light. The adjustment period was real, but once the muscle memory caught up I wasn't going back.
+I came to the Keyball61 from a [UHK 60](https://uhk.io/uhk60). The UHK 60 sold me on split ergo and thumb-mounted trackballs, both non-negotiable now, but it was heavy, bulky, and the trackball was a bolt-on module instead of a first-class part of the keyboard. The Keyball61 is the keyboard I was actually looking for: integrated trackball, ortho-linear, wireless, light. If you aren't used to ortho-linear it can be a little frustrating to get used to, but don't give up. A few days in it suddenly clicked for me and I haven't looked back.
 
 ## Customizations
 
 - **ZMK v0.3.0**: upgraded from v0.2 for module support and input processors.
-- **PMW3610 trackball driver**: [kumamuk-git/zmk-pmw3610-driver](https://github.com/kumamuk-git/zmk-pmw3610-driver) with SPI and scroll layer support.
+- **PMW3610 trackball driver**: [kumamuk-git/zmk-pmw3610-driver](https://github.com/kumamuk-git/zmk-pmw3610-driver) with SPI. This allowed me to switch the trackball to vertical/side scroll on certain layers.
 - **Native auto-mouse**: `zip_temp_layer` input processor instead of driver-level automouse. Excludes click positions, respects typing idle.
-- **OLEDs**: [zmk-nice-oled](https://github.com/mctechnology17/zmk-nice-oled) module, vertical layout, battery % and sleep.
-- **BLE tuned**: optimized for Mac OS bluetooth connectivity.
+- **OLEDs**: [zmk-nice-oled](https://github.com/mctechnology17/zmk-nice-oled) module, vertical layout, battery % and sleep. I plan to work on this more soon.
+- **BLE tuned**: optimized for Mac OS bluetooth connectivity and fixing latency issues. 
 
 ## Hardware Mods
 
