@@ -62,12 +62,6 @@
                 <&kp GRAVE>, <&kp GRAVE>, <&kp GRAVE>,
                 <&kp UP_ARROW>;
         };
-
-        grave_tap: grave_tap {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&macro_tap>, <&kp GRAVE>;
-        };
     };
 
     behaviors {
@@ -95,10 +89,10 @@
 
         sym_grave_block: sym_grave_block {
             compatible = "zmk,behavior-hold-tap";
-            #binding-cells = <0>;
+            #binding-cells = <2>;
             tapping-term-ms = <180>;
             flavor = "hold-preferred";
-            bindings = <&code_block>, <&grave_tap>;
+            bindings = <&code_block>, <&kp>;
         };
 
         // Home Row Mods - Left Hand
@@ -151,7 +145,7 @@
         symbol_layer {
             label = "SYMBOL";
             bindings = <
-&sym_grave_block  &trans     &trans     &trans     &trans    &trans                     &trans     &trans    &trans     &trans    &trans     &trans
+&sym_grave_block 0 GRAVE  &trans     &trans     &trans     &trans    &trans                     &trans     &trans    &trans     &trans    &trans     &trans
 &trans  &kp EXCL   &kp AT     &kp HASH   &kp DLLR  &kp PRCNT                  &kp CARET  &kp AMPS  &kp ASTRK  &kp LPAR  &kp RPAR   &trans
 &trans  &kp GRAVE  &kp LT     &kp LBKT   &kp LBRC  &kp MINUS                  &kp EQUAL  &kp RBRC  &kp RBKT   &kp GT    &kp TILDE  &trans
 &trans  &trans     &kp COLON  &kp UNDER  &kp BSLH  &kp PIPE   &trans  &trans  &kp QMARK  &kp FSLH  &kp PLUS   &trans    &trans     &trans
