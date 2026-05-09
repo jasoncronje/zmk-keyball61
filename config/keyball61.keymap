@@ -179,7 +179,7 @@
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &mo 4           &trans     &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &mkp LCLK  &mo_mkp 4 MCLK  &mkp RCLK  &mo 4   &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans     &mo 4           &trans     &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans                                        &trans  &trans
+&trans  &trans  &trans  &trans  &mo HSCROLL  &trans  &trans  &trans  &trans                                        &trans  &trans
             >;
         };
 
