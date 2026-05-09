@@ -62,7 +62,7 @@
         reg = <0>;
         spi-max-frequency = <2000000>;
         irq-gpios = <&gpio1 11 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-	scroll-layers = <4>;
+	scroll-layers = <4 5>;
     };
 };
 
@@ -133,7 +133,7 @@
     input-processors = <&zip_temp_layer 3 700>;
 
     scroll_layer_config {
-      layers = <4>;
+      layers = <5>;
       input-processors = <&zip_scroll_swap_mapper>;
       process-next;
     };

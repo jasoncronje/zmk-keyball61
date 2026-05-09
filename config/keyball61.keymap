@@ -3,6 +3,7 @@
 #define FUN     2
 #define MOUSE   3 // Auto-Mouse Layer
 #define SCROLL  4 // Motion Scroll Layer
+#define HSCROLL 5 // Horizontal Scroll Layer
 
 #include <behaviors/mouse_keys.dtsi>
 #include <dt-bindings/zmk/mouse.h>
@@ -27,8 +28,8 @@
 #define THUMBS 54 55 56 57 58
 
 &lt {
-    tapping-term-ms = <240>;
-    flavor = "balanced";
+    tapping-term-ms = <180>;
+    flavor = "hold-preferred";
     quick-tap-ms = <150>;
 };
 
@@ -178,11 +179,22 @@
         scroll_layer {
             label = "SCROLL";
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                              &trans    &trans          &trans        &trans           &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                              &trans    &trans          &trans        &trans           &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans                              &kp LEFT  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &kp PAGE_DOWN  &kp PAGE_UP  &trans    &trans          &trans        &trans           &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans         &trans       &trans                                                   &trans  &trans
+&none  &none  &none  &none  &none        &none                            &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none        &none                            &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none        &none                            &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none        &none  &none  &none              &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &mo HSCROLL  &none  &none  &none              &none                      &none  &none
+            >;
+        };
+
+        horizontal_scroll_layer {
+            label = "HSCROLL";
+            bindings = <
+&none  &none  &none  &none  &none  &none                  &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none  &none                  &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none  &none                  &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none  &none  &none  &none    &none                &none  &none
             >;
         };
     };
