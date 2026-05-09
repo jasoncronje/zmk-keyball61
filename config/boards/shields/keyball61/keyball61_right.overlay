@@ -132,6 +132,10 @@
     device = <&trackball>;
     input-processors = <&zip_temp_layer 3 700>;
 
+    hscroll_layer_config {
+      layers = <5>;
+    };
+
     scroll_layer_config {
       layers = <4>;
       input-processors = <&zip_scroll_swap_mapper>;
