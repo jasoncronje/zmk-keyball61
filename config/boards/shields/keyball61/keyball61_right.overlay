@@ -133,7 +133,7 @@
     input-processors = <&zip_temp_layer 3 700>;
 
     scroll_layer_config {
-      layers = <5>;
+      layers = <4>;
       input-processors = <&zip_scroll_swap_mapper>;
       process-next;
     };
