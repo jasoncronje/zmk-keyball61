@@ -6,6 +6,8 @@ manifest:
       url-base: https://github.com/kumamuk-git
     - name: mctechnology17
       url-base: https://github.com/mctechnology17
+    - name: jasoncronje
+      url-base: https://github.com/jasoncronje
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -15,7 +17,7 @@ manifest:
       remote: kumamuk-git
       revision: main
     - name: zmk-nice-oled
-      remote: mctechnology17
-      revision: main
+      remote: jasoncronje
+      revision: 2fb1e98b9f60c57ed0d541e08d998f869a224dd9
   self:
     path: config
