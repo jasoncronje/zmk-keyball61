@@ -117,6 +117,26 @@ parse_config:
     type: trans
 
   raw_binding_map:
+    # Main layer: hide shifted symbol legends to encourage SYMBOL layer usage.
+    "&kp N1": "1"
+    "&kp N2": "2"
+    "&kp N3": "3"
+    "&kp N4": "4"
+    "&kp N5": "5"
+    "&kp N6": "6"
+    "&kp N7": "7"
+    "&kp N8": "8"
+    "&kp N9": "9"
+    "&kp N0": "0"
+    "&kp BACKSLASH": '\'
+    "&hmr RSHIFT SEMI":
+      tap: ';'
+      hold: $$mdi:apple-keyboard-shift$$
+    "&kp SQT": "'"
+    "&kp COMMA": ","
+    "&kp DOT": "."
+    "&kp FSLH": "/"
+
     # Mouse
     "&mo_mkp 4 MCLK":
       tap: $$mdi:mouse-scroll-wheel$$
