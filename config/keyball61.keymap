@@ -154,7 +154,7 @@
             label = "SYMBOL";
             bindings = <
 &sym_grave_block 0 GRAVE  &trans     &trans     &trans     &trans    &trans                     &trans     &trans    &trans     &trans    &trans     &trans
-&trans  &kp EXCL   &kp AT     &kp HASH   &kp DLLR  &kp PRCNT                  &kp CARET  &kp AMPS  &kp ASTRK  &kp LPAR  &kp RPAR   &trans
+&kp LC(LS(LA(LG(TAB))))  &kp EXCL   &kp AT     &kp HASH   &kp DLLR  &kp PRCNT                  &kp CARET  &kp AMPS  &kp ASTRK  &kp LPAR  &kp RPAR   &trans
 &trans  &kp GRAVE  &kp LT     &kp LBKT   &kp LBRC  &kp MINUS                  &kp EQUAL  &kp RBRC  &kp RBKT   &kp GT    &kp TILDE  &trans
 &trans  &trans     &kp COLON  &kp UNDER  &kp BSLH  &kp PIPE   &trans  &trans  &kp QMARK  &kp FSLH  &kp PLUS   &trans    &trans     &trans
 &trans  &trans     &trans     &trans     &trans    &trans     &trans  &trans  &trans                                    &trans     &trans
