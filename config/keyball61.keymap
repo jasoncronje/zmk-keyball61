@@ -66,11 +66,13 @@
     };
 
     behaviors {
-        td_homerow: td_homerow {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&mo FUN>, <&kp F18>;
+        ht_homerow: ht_homerow {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            tapping-term-ms = <180>;
+            quick-tap-ms = <150>;
+            flavor = "balanced";
+            bindings = <&mo>, <&kp>;
         };
 
         td_bt_clr: td_bt_clr {
@@ -146,7 +148,7 @@
 &kp TAB           &kp Q   &kp W         &kp E         &kp R              &kp T                                  &kp Y        &kp U        &kp I        &kp O         &kp P          &kp BACKSLASH
 &mo 4             &hml LSHIFT A  &hml LCTRL S  &hml LALT D   &hml LGUI F        &kp G                                  &kp H        &hmr RGUI J  &hmr RALT K  &hmr RCTRL L  &hmr RSHIFT SEMI  &kp SQT
 &kp LEFT_SHIFT    &kp Z   &kp X         &kp C         &kp V              &kp B          &kp F19    &td_f20      &kp N        &kp M        &kp COMMA    &kp DOT       &kp FSLH       &kp CAPSLOCK
-&kp LEFT_CONTROL  &none   &none         &kp LEFT_ALT  &kp RIGHT_COMMAND  &kp BACKSPACE  &kp ENTER  &td_homerow  &lt 1 SPACE                                          &kp RIGHT_ALT  &kp DELETE
+&kp LEFT_CONTROL  &none   &none         &kp LEFT_ALT  &kp RIGHT_COMMAND  &kp BACKSPACE  &kp ENTER  &ht_homerow FUN F18  &lt 1 SPACE                                          &kp RIGHT_ALT  &kp DELETE
             >;
         };
 
