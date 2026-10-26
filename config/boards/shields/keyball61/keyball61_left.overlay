@@ -6,6 +6,13 @@
 
 #include "keyball61.dtsi"
 
+/ {
+    zephyr,user {
+        /* Touch ID boost converter's En pad, wired to the pin marked D3/TX0 */
+        touchid-en-gpios = <&pro_micro 1 GPIO_ACTIVE_HIGH>;
+    };
+};
+
 &kscan0 {
 	row-gpios
         = <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>

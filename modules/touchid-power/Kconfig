@@ -1,0 +1,14 @@
+config KEYBALL61_TOUCHID_POWER
+	bool "Switch the Touch ID boost converter off when the keyboard is idle"
+	depends on GPIO
+	help
+	  Drives the boost converter's En pin from the zephyr,user touchid-en-gpios
+	  property: on while the keyboard is active, off a while after it goes idle.
+
+config KEYBALL61_TOUCHID_OFF_DELAY_SEC
+	int "Seconds after the keyboard goes idle before Touch ID is switched off"
+	default 270
+	depends on KEYBALL61_TOUCHID_POWER
+	help
+	  Counted from ZMK's idle state (CONFIG_ZMK_IDLE_TIMEOUT, 30 s by default),
+	  so the default switches Touch ID off about 5 minutes after the last key press.

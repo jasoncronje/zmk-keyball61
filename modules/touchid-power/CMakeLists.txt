@@ -1,0 +1,1 @@
+target_sources_ifdef(CONFIG_KEYBALL61_TOUCHID_POWER app PRIVATE src/touchid_power.c)
