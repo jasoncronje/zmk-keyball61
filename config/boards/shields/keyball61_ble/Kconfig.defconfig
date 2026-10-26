@@ -1,0 +1,16 @@
+if SHIELD_KEYBALL61_BLE_RIGHT
+
+config ZMK_KEYBOARD_NAME
+	default "Keyball61 BLE"
+
+config ZMK_SPLIT_ROLE_CENTRAL
+	default y
+
+endif
+
+if SHIELD_KEYBALL61_BLE_LEFT || SHIELD_KEYBALL61_BLE_RIGHT
+
+config ZMK_SPLIT
+	default y
+
+endif

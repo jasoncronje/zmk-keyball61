@@ -1,0 +1,142 @@
+/*
+ * Copyright (c) 2020 ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+ 
+#include "keyball61_ble.dtsi"
+
+&default_transform {
+    col-offset = <7>;
+};
+
+&kscan0 {
+    row-gpios
+        = <&pro_micro 3 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&pro_micro 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&pro_micro 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        , <&pro_micro 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+        ;
+    
+	col-gpios
+        = <&pro_micro 9  GPIO_ACTIVE_HIGH>
+        , <&pro_micro 8  GPIO_ACTIVE_HIGH>
+        , <&pro_micro 18 GPIO_ACTIVE_HIGH>
+	    , <&pro_micro 19 GPIO_ACTIVE_HIGH>
+		, <&pro_micro 20 GPIO_ACTIVE_HIGH>
+		, <&pro_micro 21 GPIO_ACTIVE_HIGH>
+		;
+};
+
+&pinctrl {
+    spi1_default: spi1_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
+                <NRF_PSEL(SPIM_MOSI, 0, 10)>,
+                <NRF_PSEL(SPIM_MISO, 0, 10)>;
+        };
+    };
+
+    spi1_sleep: spi1_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 1, 13)>,
+                <NRF_PSEL(SPIM_MOSI, 0, 10)>,
+                <NRF_PSEL(SPIM_MISO, 0, 10)>;
+            low-power-enable;
+        };
+    };
+};
+
+&spi1 {
+    status = "okay";
+    compatible = "nordic,nrf-spim";
+    pinctrl-0 = <&spi1_default>;
+    pinctrl-1 = <&spi1_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
+
+    trackball: trackball@0 {
+        status = "okay";
+        compatible = "pixart,pmw3610";
+        reg = <0>;
+        spi-max-frequency = <2000000>;
+        irq-gpios = <&gpio1 11 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+	scroll-layers = <4 5>;
+    };
+};
+
+/*
+ * nice!view on SPI0: MOSI pm2 (P0.17), SCK pm0 (P0.08), CS pm1 (P0.06).
+ * pm3 (P0.20, the nice_view_adapter SCK) is ROW0 on this half, so the SPI
+ * bus is defined here instead of using nice_view_adapter. The display has
+ * no MISO; P0.25 is unused.
+ */
+&pinctrl {
+    spi0_default: spi0_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 8)>,
+                <NRF_PSEL(SPIM_MOSI, 0, 17)>,
+                <NRF_PSEL(SPIM_MISO, 0, 25)>;
+        };
+    };
+
+    spi0_sleep: spi0_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK, 0, 8)>,
+                <NRF_PSEL(SPIM_MOSI, 0, 17)>,
+                <NRF_PSEL(SPIM_MISO, 0, 25)>;
+            low-power-enable;
+        };
+    };
+};
+
+nice_view_spi: &spi0 {
+    compatible = "nordic,nrf-spim";
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-1 = <&spi0_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&pro_micro 1 GPIO_ACTIVE_HIGH>;
+};
+
+/* SPI0 and I2C0 share one peripheral on the nRF52840. */
+&pro_micro_i2c {
+    status = "disabled";
+};
+
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+/ {
+  input_processors {
+    zip_scroll_swap_mapper: zip_scroll_swap_mapper {
+      compatible = "zmk,input-processor-code-mapper";
+      #input-processor-cells = <0>;
+      type = <INPUT_EV_REL>;
+      map = <INPUT_REL_WHEEL INPUT_REL_HWHEEL
+             INPUT_REL_HWHEEL INPUT_REL_WHEEL>;
+    };
+
+    zip_temp_layer: zip_temp_layer {
+      compatible = "zmk,input-processor-temp-layer";
+      #input-processor-cells = <2>;
+      require-prior-idle-ms = <150>;
+      excluded-positions = <20 31 32 33 34 46>;
+    };
+  };
+
+  trackball_listener {
+    compatible = "zmk,input-listener";
+    device = <&trackball>;
+    input-processors = <&zip_temp_layer 3 700>;
+
+    hscroll_layer_config {
+      layers = <5>;
+    };
+
+    scroll_layer_config {
+      layers = <4>;
+      input-processors = <&zip_scroll_swap_mapper>;
+      process-next;
+    };
+  };
+};

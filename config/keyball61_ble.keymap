@@ -1,0 +1,2 @@
+/* Keyball61 BLE uses the same keymap as keyball61. */
+#include "keyball61.keymap"
