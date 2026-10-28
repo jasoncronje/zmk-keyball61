@@ -6,6 +6,18 @@
 
 #include "keyball61_ble.dtsi"
 
+/ {
+    zephyr,user {
+        /*
+         * Touch ID 5 V boost (TPS61023 U2 on the keyball61-ble left board):
+         * its EN pin is on pm9 (P1.06), the controller pin nearest the boost.
+         * R3 (1 M) holds EN low until the firmware drives it high. Not pm1 as
+         * on the bought board: pm1 is the nice!view's CS here.
+         */
+        touchid-en-gpios = <&pro_micro 9 GPIO_ACTIVE_HIGH>;
+    };
+};
+
 &kscan0 {
 	row-gpios
         = <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
