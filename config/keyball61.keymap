@@ -206,9 +206,10 @@
 
         scroll_layer {
             label = "SCROLL";
+            // Right-hand Neru keys: U hint (move only), I right-click hints, O scroll mode, P bisect
             bindings = <
 &none  &none  &none  &none  &none        &none                            &none  &none  &none  &none  &none  &none
-&none  &none  &none  &none  &none        &none                            &none  &none  &none  &none  &none  &none
+&none  &none  &none  &none  &none        &none                            &none  &kp F16  &kp LS(F18)  &kp LG(LS(J))  &kp F13  &none
 &none  &none  &none  &none  &none        &none                            &kp LEFT  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &none  &none
 &none  &none  &none  &none  &none        &none  &kp PAGE_DOWN  &kp PAGE_UP  &none  &none  &none  &none  &none  &none
 &none  &none  &none  &kp LEFT_ALT  &mo HSCROLL  &none  &none  &none      &none                      &kp RIGHT_ALT  &none
