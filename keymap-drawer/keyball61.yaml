@@ -43,7 +43,7 @@ layers:
   - C
   - V
   - B
-  - F19
+  - {t: '$$mdi:minus-circle-outline$$', h: F19}
   - '&td_f20'
   - N
   - M
@@ -268,10 +268,10 @@ layers:
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - {t: '$$mdi:minus-circle-outline$$', type: held alternate}
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
-  - {t: '$$mdi:minus-circle-outline$$', type: none}
+  - F16
+  - {t: Sft+F18, type: held alternate}
+  - Gui+Sft+J
+  - F13
   - {t: '$$mdi:minus-circle-outline$$', type: none}
   - {t: '$$mdi:minus-circle-outline$$', type: held}
   - {t: '$$mdi:minus-circle-outline$$', type: none}
