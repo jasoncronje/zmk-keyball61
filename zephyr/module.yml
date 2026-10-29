@@ -2,3 +2,5 @@ name: keyball61-touchid-power
 build:
   cmake: modules/touchid-power
   kconfig: modules/touchid-power/Kconfig
+  settings:
+    dts_root: modules/touchid-power

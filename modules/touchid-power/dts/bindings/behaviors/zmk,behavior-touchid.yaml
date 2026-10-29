@@ -1,0 +1,5 @@
+description: Sets the left half's Touch ID power mode (auto, on or off)
+
+compatible: "zmk,behavior-touchid"
+
+include: one_param.yaml

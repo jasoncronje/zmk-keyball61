@@ -1,7 +1,8 @@
 /*
  * Touch ID icon: a fingerprint at the bottom of the left OLED, crossed out while
  * the Touch ID board is unpowered. While the off countdown runs, a bar under the
- * print shrinks towards its centre until Touch ID switches off. Drawn through zmk-nice-oled's peripheral
+ * print shrinks towards its centre until Touch ID switches off; in always-on mode
+ * a dashed line sits there instead. Drawn through zmk-nice-oled's peripheral
  * extras hook, which runs on the display work queue as part of every peripheral
  * screen redraw.
  */
@@ -122,17 +123,34 @@ static const lv_img_dsc_t touchid_off = {
 // One redraw per pixel of bar width
 #define BAR_STEP K_MSEC(OFF_DELAY_MS / BAR_WIDTH)
 
+// Always-on dashes: 2 px on, 2 px off, across the bar's width
+#define DASH_WIDTH 2
+#define DASH_PITCH 4
+
+static void bar_rect_dsc_init(lv_draw_rect_dsc_t *rect_dsc) {
+    lv_draw_rect_dsc_init(rect_dsc);
+    rect_dsc->bg_color =
+        IS_ENABLED(CONFIG_NICE_OLED_WIDGET_INVERTED) ? lv_color_white() : lv_color_black();
+}
+
 static void draw_countdown_bar(lv_obj_t *canvas, uint32_t remaining_ms) {
     lv_coord_t width = DIV_ROUND_UP((uint64_t)BAR_WIDTH * remaining_ms, OFF_DELAY_MS);
     width = CLAMP(width, 1, BAR_WIDTH);
 
     lv_draw_rect_dsc_t rect_dsc;
-    lv_draw_rect_dsc_init(&rect_dsc);
-    rect_dsc.bg_color =
-        IS_ENABLED(CONFIG_NICE_OLED_WIDGET_INVERTED) ? lv_color_white() : lv_color_black();
+    bar_rect_dsc_init(&rect_dsc);
 
     lv_canvas_draw_rect(canvas, ICON_X + (BAR_WIDTH - width) / 2, BAR_TOP, width, BAR_HEIGHT,
                         &rect_dsc);
+}
+
+static void draw_always_on_dashes(lv_obj_t *canvas) {
+    lv_draw_rect_dsc_t rect_dsc;
+    bar_rect_dsc_init(&rect_dsc);
+
+    for (lv_coord_t x = 0; x < BAR_WIDTH; x += DASH_PITCH) {
+        lv_canvas_draw_rect(canvas, ICON_X + x, BAR_TOP, DASH_WIDTH, BAR_HEIGHT, &rect_dsc);
+    }
 }
 
 void nice_oled_draw_peripheral_extras(lv_obj_t *canvas) {
@@ -143,7 +161,9 @@ void nice_oled_draw_peripheral_extras(lv_obj_t *canvas) {
     lv_canvas_draw_img(canvas, ICON_X, ICON_TOP, on ? &touchid_on : &touchid_off, &img_dsc);
 
     uint32_t remaining_ms = keyball61_touchid_off_remaining_ms();
-    if (on && remaining_ms > 0) {
+    if (keyball61_touchid_mode() == KEYBALL61_TOUCHID_ON) {
+        draw_always_on_dashes(canvas);
+    } else if (on && remaining_ms > 0) {
         draw_countdown_bar(canvas, remaining_ms);
     }
 }

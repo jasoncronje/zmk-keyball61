@@ -2,8 +2,9 @@
  * Touch ID power: the Touch ID board runs from a TPS61023 5 V boost fed by the
  * battery. Its En pin is driven here so the boost (and the Touch ID board) is on
  * while the keyboard is active and off a while after it goes idle. While this
- * half has USB power it stays on regardless of idle. In shutdown the TPS61023
- * disconnects its output, so the Touch ID board draws nothing.
+ * half has USB power it stays on regardless of idle. The &touchid behavior can
+ * override that with an always-on or off mode until the next reset. In shutdown
+ * the TPS61023 disconnects its output, so the Touch ID board draws nothing.
  */
 
 #include <zephyr/device.h>
@@ -15,6 +16,8 @@
 #include <zmk/activity.h>
 #include <zmk/event_manager.h>
 #include <zmk/events/activity_state_changed.h>
+
+#include <dt-bindings/keyball61/touchid.h>
 
 #include "touchid_power.h"
 
@@ -30,7 +33,12 @@ static const struct gpio_dt_spec en = GPIO_DT_SPEC_GET(DT_PATH(zephyr_user), tou
 // The keyboard starts active, so Touch ID starts on
 static bool touchid_on = true;
 
+// Every reset starts back in auto, so a forgotten off can't stick
+static enum keyball61_touchid_mode mode = KEYBALL61_TOUCHID_AUTO;
+
 bool keyball61_touchid_is_on(void) { return touchid_on; }
+
+enum keyball61_touchid_mode keyball61_touchid_mode(void) { return mode; }
 
 static void notify_display(void) {
 #if IS_ENABLED(CONFIG_KEYBALL61_TOUCHID_DISPLAY_ICON)
@@ -87,15 +95,69 @@ static void touchid_keep_on(void) {
     touchid_power_set(true);
 }
 
+// Brings the power in line with the mode, USB power and activity
+static void touchid_update(void) {
+    switch (mode) {
+    case KEYBALL61_TOUCHID_ON:
+        touchid_keep_on();
+        break;
+    case KEYBALL61_TOUCHID_OFF:
+        cancel_off_countdown();
+        touchid_power_set(false);
+        break;
+    case KEYBALL61_TOUCHID_AUTO:
+        // On USB power there's no battery to save, so Touch ID never switches off
+        if (usb_powered() || zmk_activity_get_state() == ZMK_ACTIVITY_ACTIVE) {
+            touchid_keep_on();
+        } else if (touchid_on && !k_work_delayable_is_pending(&touchid_off_work)) {
+            // Idle on battery, e.g. just unplugged: count down from now
+            start_off_countdown();
+        }
+        break;
+    }
+}
+
+static uint32_t pending_command;
+
+static void touchid_command_work_cb(struct k_work *work) {
+    enum keyball61_touchid_mode old_mode = mode;
+
+    switch (pending_command) {
+    case TID_AUTO:
+        mode = KEYBALL61_TOUCHID_AUTO;
+        break;
+    case TID_ON:
+        mode = KEYBALL61_TOUCHID_ON;
+        break;
+    case TID_OFF:
+        mode = KEYBALL61_TOUCHID_OFF;
+        break;
+    case TID_CYCLE:
+        mode = (mode + 1) % (KEYBALL61_TOUCHID_OFF + 1);
+        break;
+    }
+
+    LOG_INF("Touch ID mode %d", mode);
+    touchid_update();
+    if (mode != old_mode) {
+        // The icon shows the mode even when the power doesn't change
+        notify_display();
+    }
+}
+
+static K_WORK_DEFINE(touchid_command_work, touchid_command_work_cb);
+
+void keyball61_touchid_command(uint32_t command) {
+    // Runs on the split transport's thread; the listener runs on the system work
+    // queue, so apply the command there too
+    pending_command = command;
+    k_work_submit(&touchid_command_work);
+}
+
 static int touchid_power_listener(const zmk_event_t *eh) {
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
     if (as_zmk_usb_conn_state_changed(eh) != NULL) {
-        if (usb_powered()) {
-            touchid_keep_on();
-        } else if (zmk_activity_get_state() != ZMK_ACTIVITY_ACTIVE) {
-            // Unplugged while idle: start the off countdown from now
-            start_off_countdown();
-        }
+        touchid_update();
         return ZMK_EV_EVENT_BUBBLE;
     }
 #endif
@@ -105,21 +167,12 @@ static int touchid_power_listener(const zmk_event_t *eh) {
         return ZMK_EV_EVENT_BUBBLE;
     }
 
-    switch (ev->state) {
-    case ZMK_ACTIVITY_ACTIVE:
-        touchid_keep_on();
-        break;
-    case ZMK_ACTIVITY_IDLE:
-        // On USB power there's no battery to save, so Touch ID never switches off
-        if (!usb_powered()) {
-            start_off_countdown();
-        }
-        break;
-    case ZMK_ACTIVITY_SLEEP:
+    if (ev->state == ZMK_ACTIVITY_SLEEP) {
         // Deep sleep keeps GPIO outputs, so the boost stays off until the next wake resets us
         cancel_off_countdown();
         touchid_power_set(false);
-        break;
+    } else {
+        touchid_update();
     }
 
     return ZMK_EV_EVENT_BUBBLE;
