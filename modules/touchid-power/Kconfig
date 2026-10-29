@@ -4,6 +4,7 @@ config KEYBALL61_TOUCHID_POWER
 	help
 	  Drives the boost converter's En pin from the zephyr,user touchid-en-gpios
 	  property: on while the keyboard is active, off a while after it goes idle.
+	  It stays on whenever this half has USB power.
 
 config KEYBALL61_TOUCHID_OFF_DELAY_SEC
 	int "Seconds after the keyboard goes idle before Touch ID is switched off"
