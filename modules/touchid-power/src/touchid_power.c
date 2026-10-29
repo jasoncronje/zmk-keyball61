@@ -16,6 +16,8 @@
 #include <zmk/event_manager.h>
 #include <zmk/events/activity_state_changed.h>
 
+#include "touchid_power.h"
+
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
 #include <zmk/events/usb_conn_state_changed.h>
 #include <zmk/usb.h>
@@ -25,9 +27,22 @@ LOG_MODULE_REGISTER(touchid_power, CONFIG_ZMK_LOG_LEVEL);
 
 static const struct gpio_dt_spec en = GPIO_DT_SPEC_GET(DT_PATH(zephyr_user), touchid_en_gpios);
 
+// The keyboard starts active, so Touch ID starts on
+static bool touchid_on = true;
+
+bool keyball61_touchid_is_on(void) { return touchid_on; }
+
 static void touchid_power_set(bool on) {
     LOG_DBG("Touch ID power %s", on ? "on" : "off");
     gpio_pin_set_dt(&en, on);
+
+    if (on == touchid_on) {
+        return;
+    }
+    touchid_on = on;
+#if IS_ENABLED(CONFIG_KEYBALL61_TOUCHID_DISPLAY_ICON)
+    keyball61_touchid_display_update();
+#endif
 }
 
 static void touchid_off_work_cb(struct k_work *work) { touchid_power_set(false); }

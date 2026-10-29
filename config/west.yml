@@ -18,6 +18,6 @@ manifest:
       revision: main
     - name: zmk-nice-oled
       remote: jasoncronje
-      revision: 2fb1e98b9f60c57ed0d541e08d998f869a224dd9
+      revision: a19ef25b1652a70c7c16027437fe42c13d04d6b2
   self:
     path: config
