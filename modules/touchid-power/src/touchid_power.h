@@ -4,9 +4,9 @@
 #include <stdint.h>
 
 enum keyball61_touchid_mode {
-    // On while active or on USB power, off a while after the keyboard goes idle
+    // On while active, off a while after the keyboard goes idle; set on unplugging
     KEYBALL61_TOUCHID_AUTO,
-    // On until deep sleep, whatever the activity
+    // On until deep sleep, whatever the activity; set on plugging in USB
     KEYBALL61_TOUCHID_ON,
     // Off, even on USB power or while typing
     KEYBALL61_TOUCHID_OFF,
