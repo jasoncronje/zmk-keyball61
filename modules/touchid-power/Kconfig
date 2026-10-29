@@ -15,7 +15,7 @@ config KEYBALL61_TOUCHID_OFF_DELAY_SEC
 	  so the default switches Touch ID off about 5 minutes after the last key press.
 
 config KEYBALL61_TOUCHID_DISPLAY_ICON
-	bool "Show a fingerprint icon on the peripheral OLED while Touch ID is powered"
+	bool "Show a fingerprint on the peripheral OLED, crossed out while Touch ID is off"
 	default y
 	depends on KEYBALL61_TOUCHID_POWER && ZMK_DISPLAY && NICE_OLED_WIDGET_STATUS
 	depends on ZMK_SPLIT && !ZMK_SPLIT_ROLE_CENTRAL
