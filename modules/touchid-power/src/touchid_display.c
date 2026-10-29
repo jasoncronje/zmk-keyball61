@@ -1,6 +1,7 @@
 /*
  * Touch ID icon: a fingerprint at the bottom of the left OLED, crossed out while
- * the Touch ID board is unpowered. Drawn through zmk-nice-oled's peripheral
+ * the Touch ID board is unpowered. While the off countdown runs, a bar under the
+ * print shrinks towards its centre until Touch ID switches off. Drawn through zmk-nice-oled's peripheral
  * extras hook, which runs on the display work queue as part of every peripheral
  * screen redraw.
  */
@@ -109,18 +110,57 @@ static const lv_img_dsc_t touchid_off = {
     .data = touchid_off_map,
 };
 
-void nice_oled_draw_peripheral_extras(lv_obj_t *canvas) {
-    lv_draw_img_dsc_t img_dsc;
-    lv_draw_img_dsc_init(&img_dsc);
+#define ICON_X 1
+#define ICON_TOP (CONFIG_KEYBALL61_TOUCHID_ICON_CENTER_Y - 15)
 
-    lv_canvas_draw_img(canvas, 1, CONFIG_KEYBALL61_TOUCHID_ICON_CENTER_Y - 15,
-                       keyball61_touchid_is_on() ? &touchid_on : &touchid_off, &img_dsc);
+// The on print leaves bitmap rows 27-29 empty; the bar uses rows 28-29
+#define BAR_WIDTH 30
+#define BAR_TOP (ICON_TOP + 28)
+#define BAR_HEIGHT 2
+
+#define OFF_DELAY_MS (CONFIG_KEYBALL61_TOUCHID_OFF_DELAY_SEC * 1000U)
+// One redraw per pixel of bar width
+#define BAR_STEP K_MSEC(OFF_DELAY_MS / BAR_WIDTH)
+
+static void draw_countdown_bar(lv_obj_t *canvas, uint32_t remaining_ms) {
+    lv_coord_t width = DIV_ROUND_UP((uint64_t)BAR_WIDTH * remaining_ms, OFF_DELAY_MS);
+    width = CLAMP(width, 1, BAR_WIDTH);
+
+    lv_draw_rect_dsc_t rect_dsc;
+    lv_draw_rect_dsc_init(&rect_dsc);
+    rect_dsc.bg_color =
+        IS_ENABLED(CONFIG_NICE_OLED_WIDGET_INVERTED) ? lv_color_white() : lv_color_black();
+
+    lv_canvas_draw_rect(canvas, ICON_X + (BAR_WIDTH - width) / 2, BAR_TOP, width, BAR_HEIGHT,
+                        &rect_dsc);
 }
 
-static void redraw_work_cb(struct k_work *work) { nice_oled_peripheral_redraw(); }
+void nice_oled_draw_peripheral_extras(lv_obj_t *canvas) {
+    bool on = keyball61_touchid_is_on();
 
-static K_WORK_DEFINE(redraw_work, redraw_work_cb);
+    lv_draw_img_dsc_t img_dsc;
+    lv_draw_img_dsc_init(&img_dsc);
+    lv_canvas_draw_img(canvas, ICON_X, ICON_TOP, on ? &touchid_on : &touchid_off, &img_dsc);
+
+    uint32_t remaining_ms = keyball61_touchid_off_remaining_ms();
+    if (on && remaining_ms > 0) {
+        draw_countdown_bar(canvas, remaining_ms);
+    }
+}
+
+static void redraw_work_cb(struct k_work *work);
+
+static K_WORK_DELAYABLE_DEFINE(redraw_work, redraw_work_cb);
+
+static void redraw_work_cb(struct k_work *work) {
+    nice_oled_peripheral_redraw();
+
+    // Keep shrinking the bar while the countdown runs
+    if (keyball61_touchid_off_remaining_ms() > 0) {
+        k_work_reschedule_for_queue(zmk_display_work_q(), &redraw_work, BAR_STEP);
+    }
+}
 
 void keyball61_touchid_display_update(void) {
-    k_work_submit_to_queue(zmk_display_work_q(), &redraw_work);
+    k_work_reschedule_for_queue(zmk_display_work_q(), &redraw_work, K_NO_WAIT);
 }

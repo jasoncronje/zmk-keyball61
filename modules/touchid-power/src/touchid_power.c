@@ -32,6 +32,12 @@ static bool touchid_on = true;
 
 bool keyball61_touchid_is_on(void) { return touchid_on; }
 
+static void notify_display(void) {
+#if IS_ENABLED(CONFIG_KEYBALL61_TOUCHID_DISPLAY_ICON)
+    keyball61_touchid_display_update();
+#endif
+}
+
 static void touchid_power_set(bool on) {
     LOG_DBG("Touch ID power %s", on ? "on" : "off");
     gpio_pin_set_dt(&en, on);
@@ -40,14 +46,33 @@ static void touchid_power_set(bool on) {
         return;
     }
     touchid_on = on;
-#if IS_ENABLED(CONFIG_KEYBALL61_TOUCHID_DISPLAY_ICON)
-    keyball61_touchid_display_update();
-#endif
+    notify_display();
 }
 
 static void touchid_off_work_cb(struct k_work *work) { touchid_power_set(false); }
 
 static K_WORK_DELAYABLE_DEFINE(touchid_off_work, touchid_off_work_cb);
+
+uint32_t keyball61_touchid_off_remaining_ms(void) {
+    if (!k_work_delayable_is_pending(&touchid_off_work)) {
+        return 0;
+    }
+    return (uint32_t)k_ticks_to_ms_ceil64(k_work_delayable_remaining_get(&touchid_off_work));
+}
+
+static void start_off_countdown(void) {
+    k_work_reschedule(&touchid_off_work, K_SECONDS(CONFIG_KEYBALL61_TOUCHID_OFF_DELAY_SEC));
+    notify_display();
+}
+
+static void cancel_off_countdown(void) {
+    bool was_counting = k_work_delayable_is_pending(&touchid_off_work);
+    k_work_cancel_delayable(&touchid_off_work);
+    if (was_counting && touchid_on) {
+        // Power isn't changing, but the countdown bar has to go
+        notify_display();
+    }
+}
 
 static bool usb_powered(void) {
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
@@ -58,7 +83,7 @@ static bool usb_powered(void) {
 }
 
 static void touchid_keep_on(void) {
-    k_work_cancel_delayable(&touchid_off_work);
+    cancel_off_countdown();
     touchid_power_set(true);
 }
 
@@ -69,7 +94,7 @@ static int touchid_power_listener(const zmk_event_t *eh) {
             touchid_keep_on();
         } else if (zmk_activity_get_state() != ZMK_ACTIVITY_ACTIVE) {
             // Unplugged while idle: start the off countdown from now
-            k_work_reschedule(&touchid_off_work, K_SECONDS(CONFIG_KEYBALL61_TOUCHID_OFF_DELAY_SEC));
+            start_off_countdown();
         }
         return ZMK_EV_EVENT_BUBBLE;
     }
@@ -87,12 +112,12 @@ static int touchid_power_listener(const zmk_event_t *eh) {
     case ZMK_ACTIVITY_IDLE:
         // On USB power there's no battery to save, so Touch ID never switches off
         if (!usb_powered()) {
-            k_work_reschedule(&touchid_off_work, K_SECONDS(CONFIG_KEYBALL61_TOUCHID_OFF_DELAY_SEC));
+            start_off_countdown();
         }
         break;
     case ZMK_ACTIVITY_SLEEP:
         // Deep sleep keeps GPIO outputs, so the boost stays off until the next wake resets us
-        k_work_cancel_delayable(&touchid_off_work);
+        cancel_off_countdown();
         touchid_power_set(false);
         break;
     }
