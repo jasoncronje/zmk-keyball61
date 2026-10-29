@@ -142,7 +142,7 @@ layers:
   - F12
   - {t: '$$mdi:transfer$$', type: trans}
   - {t: '$$mdi:transfer$$', type: trans}
-  - {t: '$$mdi:transfer$$', type: trans}
+  - '&touchid TID_CYCLE'
   - {t: '$$mdi:transfer$$', type: trans}
   - $$mdi:volume-low$$
   - MUTE
