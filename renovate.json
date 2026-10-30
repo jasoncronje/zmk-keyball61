@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "enabledManagers": ["github-actions", "custom.regex"],
+  "timezone": "America/Los_Angeles",
+  "schedule": ["* 0-6 * * 1"],
+  "prConcurrentLimit": 3,
+  "automerge": false,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^config/west\\.yml$/"],
+      "matchStrings": [
+        "# renovate: datasource=github-tags depName=(?<depName>[^\\s]+)\\s+revision: (?<currentValue>[^\\s]+)"
+      ],
+      "datasourceTemplate": "github-tags",
+      "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^config/west\\.yml$/"],
+      "matchStrings": [
+        "# renovate: datasource=git-refs depName=(?<depName>[^\\s]+) currentValue=(?<currentValue>[^\\s]+)\\s+revision: (?<currentDigest>[a-f0-9]{40})"
+      ],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/{{{depName}}}"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "pinDigests": true
+    },
+    {
+      "matchManagers": ["custom.regex"],
+      "prBodyNotes": [
+        "Before merging: require a successful firmware build, flash the affected half using scripts/flash-keyball.py, and verify pointer movement, scrolling, typing, Bluetooth reconnect, and any affected display or Touch ID behavior. Build success alone does not verify hardware behavior."
+      ]
+    }
+  ]
+}
