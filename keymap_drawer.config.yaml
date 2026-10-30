@@ -117,6 +117,7 @@ parse_config:
     type: trans
 
   raw_binding_map:
+    "&ht_neru FUN 0": {tap: Grid, hold: FUNCTION, shifted: Hints}
     # Main layer: hide shifted symbol legends to encourage SYMBOL layer usage.
     "&kp N1": "1"
     "&kp N2": "2"
