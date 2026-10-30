@@ -79,7 +79,7 @@ static void draw_output(void) {
         return;
     }
 
-    char profile[4];
+    char profile[12];
     snprintf(profile, sizeof(profile), "%d", endpoint.ble.profile_index + 1);
     draw_header("BT", 28, profile, false);
 
