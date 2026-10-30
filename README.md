@@ -36,11 +36,11 @@ I've printed custom cases, combined MX switch plates with bottom-access screws, 
 The right function-layer thumb key stays in its existing position:
 
 - Tap once for Neru's recursive grid in the focused window (F18).
-- Tap again after the 220 ms double-tap window for the full desktop grid (F18 again).
-- Double-tap within 220 ms for hints (F17).
+- Tap again after the 350 ms double-tap window for the full desktop grid (F18 again).
+- Double-tap within 350 ms for hints (F17).
 - Hold for the FUNCTION layer, using the existing 180 ms hold threshold and 150 ms quick-tap setting.
 
-A single tap waits for the double-tap window, or resolves sooner when another key is pressed. The macOS Neru config must bind F18 to `recursive_grid --capture-scope=window,screen --cursor-selection-mode hold` and F17 to `hints --action left_click`.
+A single tap waits for the double-tap window, or resolves sooner when another key is pressed. The macOS Neru config must bind F18 to `recursive_grid --capture-scope=window,screen --cursor-selection-mode hold` and F17 to `hints --action left_click --repeat`.
 
 ## Building Firmware
 

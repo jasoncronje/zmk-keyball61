@@ -98,7 +98,7 @@
         td_neru: td_neru {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
-            tapping-term-ms = <220>;
+            tapping-term-ms = <350>;
             bindings = <&kp F18>, <&kp F17>;
         };
 
