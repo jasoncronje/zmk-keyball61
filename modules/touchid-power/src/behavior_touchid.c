@@ -14,7 +14,7 @@
 
 #include <dt-bindings/keyball61/touchid.h>
 
-#include "touchid_power.h"
+#include <keyball61/touchid_power.h>
 
 LOG_MODULE_REGISTER(behavior_touchid, CONFIG_ZMK_LOG_LEVEL);
 

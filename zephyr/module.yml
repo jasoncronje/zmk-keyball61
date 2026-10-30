@@ -1,6 +1,6 @@
-name: keyball61-touchid-power
+name: keyball61-modules
 build:
-  cmake: modules/touchid-power
-  kconfig: modules/touchid-power/Kconfig
+  cmake: modules
+  kconfig: modules/Kconfig
   settings:
     dts_root: modules/touchid-power

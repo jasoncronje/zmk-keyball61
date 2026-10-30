@@ -1,0 +1,2 @@
+rsource "touchid-power/Kconfig"
+rsource "status-screen/Kconfig"

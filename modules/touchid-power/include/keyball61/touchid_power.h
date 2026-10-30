@@ -22,5 +22,6 @@ void keyball61_touchid_command(uint32_t command);
 // Time left before Touch ID switches off, or 0 when no countdown is running
 uint32_t keyball61_touchid_off_remaining_ms(void);
 
-// Schedules a redraw on the display work queue after the power state changes
+// Schedules a redraw on the display work queue after the power state changes;
+// provided by the status screen (modules/status-screen)
 void keyball61_touchid_display_update(void);

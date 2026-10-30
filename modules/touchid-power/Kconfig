@@ -14,20 +14,3 @@ config KEYBALL61_TOUCHID_OFF_DELAY_SEC
 	help
 	  Counted from ZMK's idle state (CONFIG_ZMK_IDLE_TIMEOUT, 30 s by default),
 	  so the default switches Touch ID off about 5 minutes after the last key press.
-
-config KEYBALL61_TOUCHID_DISPLAY_ICON
-	bool "Show a fingerprint on the peripheral OLED, crossed out while Touch ID is off"
-	default y
-	depends on KEYBALL61_TOUCHID_POWER && ZMK_DISPLAY && NICE_OLED_WIDGET_STATUS
-	depends on ZMK_SPLIT && !ZMK_SPLIT_ROLE_CENTRAL
-	help
-	  Draws through zmk-nice-oled's nice_oled_draw_peripheral_extras() hook, at the
-	  bottom of the portrait canvas.
-
-config KEYBALL61_TOUCHID_ICON_CENTER_Y
-	int "Fingerprint icon centre, in portrait canvas rows"
-	default 143
-	depends on KEYBALL61_TOUCHID_DISPLAY_ICON
-	help
-	  The nice_oled 128x32 panel shows rows 32-159 of the 160-row portrait canvas,
-	  so the default sits the 29 px icon at the bottom of the screen.

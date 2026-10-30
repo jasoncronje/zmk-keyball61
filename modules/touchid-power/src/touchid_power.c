@@ -19,7 +19,7 @@
 
 #include <dt-bindings/keyball61/touchid.h>
 
-#include "touchid_power.h"
+#include <keyball61/touchid_power.h>
 
 #if IS_ENABLED(CONFIG_USB_DEVICE_STACK)
 #include <zmk/events/usb_conn_state_changed.h>
@@ -42,7 +42,7 @@ bool keyball61_touchid_is_on(void) { return touchid_on; }
 enum keyball61_touchid_mode keyball61_touchid_mode(void) { return mode; }
 
 static void notify_display(void) {
-#if IS_ENABLED(CONFIG_KEYBALL61_TOUCHID_DISPLAY_ICON)
+#if IS_ENABLED(CONFIG_KEYBALL61_STATUS_SCREEN)
     keyball61_touchid_display_update();
 #endif
 }
