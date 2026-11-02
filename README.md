@@ -31,15 +31,15 @@ I've printed custom cases, combined MX switch plates with bottom-access screws, 
 
 ![My Keyball61 build](docs/MyBuild.jpeg)
 
-## Neru thumb key
+## Mouseless thumb key
 
-The right function-layer thumb key sends F18 on tap and holds the FUNCTION layer:
+The right function-layer thumb key drives Mouseless and holds the FUNCTION layer:
 
-- Tap once for Neru's recursive grid in the focused window.
-- Tap again for the full-screen grid. Neru cycles the capture scope on each F18 press.
+- Tap once to open the Mouseless grid (F18).
+- Double-tap within 260 ms to toggle free mode (F13).
 - Hold for the FUNCTION layer, using the 180 ms hold threshold and 150 ms quick-tap setting.
 
-The macOS Neru config must bind F18 to `recursive_grid --capture-scope=window,screen --cursor-selection-mode hold`.
+The double tap is handled in firmware because the Mouseless grid overlay grabs the second press. A single tap therefore waits for the 260 ms double-tap window, or resolves sooner when another key is pressed. The window is `tapping-term-ms` on `td_mouseless` in `config/keyball61.keymap`; 220 ms missed double taps and 350 ms felt laggy. Mouseless must bind F18 to open the grid and F13 to toggle free mode.
 
 ## Building Firmware
 
