@@ -182,6 +182,22 @@
             hold-trigger-key-positions = <KEYS_L THUMBS>;
             hold-trigger-on-release;
         };
+
+        // J, K, L: hold alone sends the held letter for Mouseless free mode;
+        // the mod only triggers when a LEFT-hand key is pressed before the term.
+
+        hmr_free: homerow_mods_right_free {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            bindings = <&kp>, <&kp>;
+
+            flavor = "tap-unless-interrupted";
+            tapping-term-ms = <260>;
+            quick-tap-ms = <175>;
+            require-prior-idle-ms = <75>;
+            hold-trigger-key-positions = <KEYS_L THUMBS>;
+            hold-trigger-on-release;
+        };
     };
 
     keymap {
@@ -192,7 +208,7 @@
             bindings = <
 &kp ESC           &kp N1  &kp N2        &kp N3        &kp N4             &kp N5                                 &kp N6       &kp N7       &kp N8       &kp N9        &kp N0         &kp BSPC
 &kp TAB           &kp Q   &kp W         &kp E         &kp R              &kp T                                  &kp Y        &kp U        &kp I        &kp O         &kp P          &kp BACKSLASH
-&mo 4             &hml LSHIFT A  &hml LCTRL S  &hml LALT D   &hml LGUI F        &kp G                                  &kp H        &hmr RGUI J  &hmr RALT K  &hmr RCTRL L  &hmr RSHIFT SEMI  &kp SQT
+&mo 4             &hml LSHIFT A  &hml LCTRL S  &hml LALT D   &hml LGUI F        &kp G                                  &kp H        &hmr_free RGUI J  &hmr_free RALT K  &hmr_free RCTRL L  &hmr RSHIFT SEMI  &kp SQT
 &kp LEFT_SHIFT    &kp Z   &kp X         &kp C         &kp V              &kp B          &sw_ptt F19 0  &td_f20      &kp N        &kp M        &kp COMMA    &kp DOT       &kp FSLH       &kp CAPSLOCK
 &kp LEFT_CONTROL  &none   &none         &kp LEFT_ALT  &kp RIGHT_COMMAND  &kp BACKSPACE  &kp ENTER  &ht_mouseless FUN 0  &lt 1 SPACE                                          &kp RIGHT_ALT  &kp DELETE
             >;

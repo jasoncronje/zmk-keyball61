@@ -41,6 +41,8 @@ The right function-layer thumb key drives Mouseless and holds the FUNCTION layer
 
 The double tap is handled in firmware because the Mouseless grid overlay grabs the second press. A single tap therefore waits for the 260 ms double-tap window, or resolves sooner when another key is pressed. The window is `tapping-term-ms` on `td_mouseless` in `config/keyball61.keymap`; 220 ms missed double taps and 350 ms felt laggy. Mouseless must bind F18 to open the grid and F13 to toggle free mode.
 
+Free mode moves with H, J, K and L held down. J, K and L are home-row mods, so they use `hmr_free` (`tap-unless-interrupted`): held alone they send the letter after the 260 ms tapping term, and they only become Cmd, Option or Ctrl when a left-hand key is pressed first.
+
 ## Building Firmware
 
 Firmware builds automatically via GitHub Actions on pushes and pull requests. Renovate branches build through their pull requests to avoid duplicate push builds. A separate [keymap-drawer](https://github.com/caksoylar/keymap-drawer) workflow regenerates keymap images on relevant pushes. Day-to-day keymap edits are made with [keymap-editor](https://nickcoutsos.github.io/keymap-editor/) rather than ZMK Studio.
