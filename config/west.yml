@@ -14,10 +14,6 @@ manifest:
       # renovate: datasource=github-tags depName=zmkfirmware/zmk
       revision: v0.3.0
       import: app/west.yml
-    - name: zmk-pmw3610-driver
-      remote: kumamuk-git
-      # renovate: datasource=git-refs depName=kumamuk-git/zmk-pmw3610-driver currentValue=main
-      revision: 5e04553ab803d24405bd45621a41310ea3050e59
     - name: zmk-nice-oled
       remote: jasoncronje
       # renovate: datasource=git-refs depName=jasoncronje/zmk-nice-oled currentValue=keyball61/peripheral-extras-hook
