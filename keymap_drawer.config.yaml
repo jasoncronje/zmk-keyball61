@@ -119,6 +119,7 @@ parse_config:
   raw_binding_map:
     "&ht_mouseless FUN 0": {tap: F18, hold: FUNCTION, shifted: "2× Free"}
     "&free_toggle": "Free"
+    "&ht_free FUN 0": {tap: Free off, hold: FUNCTION}
     "&free_esc": {tap: Esc, shifted: "FREE off"}
     # Main layer: hide shifted symbol legends to encourage SYMBOL layer usage.
     "&kp N1": "1"
