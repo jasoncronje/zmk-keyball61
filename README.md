@@ -41,7 +41,7 @@ The right function-layer thumb key drives Mouseless and holds the FUNCTION layer
 
 The double tap is handled in firmware because the Mouseless grid overlay grabs the second press. A single tap therefore waits for the 260 ms double-tap window, or resolves sooner when another key is pressed. The window is `tapping-term-ms` on `td_mouseless` in `config/keyball61.keymap`; 220 ms missed double taps and 350 ms felt laggy. Mouseless must bind F18 to open the grid and F13 to toggle free mode.
 
-The FREE layer replaces the home-row mods on A, S, D, F, J, K and L and the Space layer-tap with plain keys, so Mouseless sees them held (move, speed, click and drag) instead of Cmd/Option/Ctrl/Shift or the SYMBOL layer. Every other key passes through. To leave, tap the thumb key once (F13 + layer off, no grid and no double-tap wait; hold is still FUNCTION) or press Esc (Escape, which exits free mode, + layer off). The SCROLL layer's O key uses the same F13 + layer toggle. The keyboard can't see Mouseless, so if free mode ends another way, press Esc to drop the layer.
+The FREE layer replaces the home-row mods on A, S, D, F, J, K and L and the Space layer-tap with plain keys, so Mouseless sees them held (move, speed, click and drag) instead of Cmd/Option/Ctrl/Shift or the SYMBOL layer. Every other key passes through. To leave, tap the thumb key once (F13 + layer off, no grid and no double-tap wait; hold is still FUNCTION) or press Esc or 6 (Escape, which exits free mode, + layer off). The SCROLL layer's O key uses the same F13 + layer toggle. The keyboard can't see Mouseless, so if free mode ends another way, press Esc to drop the layer.
 
 ## Building Firmware
 

@@ -284,7 +284,7 @@
             // On while Mouseless free mode is on: plain home row and Space, so
             // held H/J/K/L (move), A/S/D/F (speed) and Space (click/drag) reach Mouseless.
             bindings = <
-&free_esc  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&free_esc  &trans  &trans  &trans  &trans  &trans                  &free_esc  &trans  &trans  &trans  &trans  &trans
 &trans     &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
 &trans     &kp A   &kp S   &kp D   &kp F   &trans                  &trans  &kp J   &kp K   &kp L   &trans  &trans
 &trans     &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
