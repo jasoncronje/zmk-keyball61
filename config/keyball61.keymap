@@ -4,6 +4,7 @@
 #define MOUSE   3 // Auto-Mouse Layer
 #define SCROLL  4 // Motion Scroll Layer
 #define HSCROLL 5 // Horizontal Scroll Layer
+#define FREE    6 // Mouseless free mode: plain keys so holds reach Mouseless
 
 #include <behaviors/mouse_keys.dtsi>
 #include <dt-bindings/zmk/mouse.h>
@@ -64,6 +65,20 @@
                 <&kp GRAVE>, <&kp GRAVE>, <&kp GRAVE>,
                 <&kp UP_ARROW>;
         };
+
+        // Toggle Mouseless free mode (F13) and the FREE layer together.
+        free_toggle: free_toggle {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp F13 &tog FREE>;
+        };
+
+        // Escape exits Mouseless free mode, so leave the FREE layer with it.
+        free_esc: free_esc {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp ESC &tog FREE>;
+        };
     };
 
     behaviors {
@@ -93,13 +108,13 @@
             bindings = <&mo>, <&td_mouseless>;
         };
 
-        // Mouseless: one tap opens the grid (F18), two quick taps toggle free mode (F13).
+        // Mouseless: one tap opens the grid (F18), two quick taps toggle free mode (F13 + FREE layer).
         // Tune the double-tap window here: 220 ms missed double taps, 350 ms felt laggy.
         td_mouseless: td_mouseless {
             compatible = "zmk,behavior-tap-dance";
             #binding-cells = <0>;
             tapping-term-ms = <260>;
-            bindings = <&kp F18>, <&kp F13>;
+            bindings = <&kp F18>, <&free_toggle>;
         };
 
         td_bt_clr: td_bt_clr {
@@ -233,10 +248,10 @@
 
         scroll_layer {
             label = "SCROLL";
-            // Right-hand Neru keys: Y hint (move only), U right-click hints, I scroll mode, O bisect
+            // Right-hand Neru keys: Y hint (move only), U right-click hints, I scroll mode, O Mouseless free mode
             bindings = <
 &none  &none  &none  &none  &none        &none                            &none  &none  &none  &none  &none  &none
-&none  &none  &none  &none  &none        &none                            &kp F16  &kp LS(F18)  &kp LG(LS(J))  &kp F13  &none  &none
+&none  &none  &none  &none  &none        &none                            &kp F16  &kp LS(F18)  &kp LG(LS(J))  &free_toggle  &none  &none
 &none  &none  &none  &none  &none        &none                            &kp LEFT  &kp DOWN_ARROW  &kp UP_ARROW  &kp RIGHT_ARROW  &none  &none
 &none  &none  &none  &none  &none        &none  &kp PAGE_DOWN  &kp PAGE_UP  &none  &none  &none  &none  &none  &none
 &none  &none  &none  &kp LEFT_ALT  &mo HSCROLL  &none  &none  &none      &none                      &kp RIGHT_ALT  &none
@@ -251,6 +266,19 @@
 &none  &none  &none  &none  &none  &none                  &kp LG(LEFT)  &kp LG(DOWN_ARROW)  &kp LG(UP_ARROW)  &kp LG(RIGHT_ARROW)  &none  &none
 &none  &none  &none  &none  &none  &none  &none  &none    &none  &none  &none  &none  &none  &none
 &none  &none  &none  &none  &none  &none  &none  &none    &none                &none  &none
+            >;
+        };
+
+        free_layer {
+            label = "FREE";
+            // On while Mouseless free mode is on: plain home row and Space, so
+            // held H/J/K/L (move), A/S/D/F (speed) and Space (click/drag) reach Mouseless.
+            bindings = <
+&free_esc  &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans     &trans  &trans  &trans  &trans  &trans                  &trans  &trans  &trans  &trans  &trans  &trans
+&trans     &kp A   &kp S   &kp D   &kp F   &trans                  &trans  &kp J   &kp K   &kp L   &trans  &trans
+&trans     &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans
+&trans     &trans  &trans  &trans  &trans  &trans  &trans  &trans  &kp SPACE                       &trans  &trans
             >;
         };
     };
