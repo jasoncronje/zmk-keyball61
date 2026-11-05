@@ -29,7 +29,7 @@ I came to the Keyball61 from a [UHK 60](https://uhk.io/uhk60). The UHK 60 sold m
 
 I've printed custom cases, combined MX switch plates with bottom-access screws, and protective covers for storage and travel. Parts, print downloads, and assembly notes are in the [build sheet](docs/build-sheet.md).
 
-![My Keyball61 build](docs/MyBuild.jpeg)
+![My Keyball61 build](docs/keyball61-trackball-amber.jpg)
 
 ## Mouseless thumb key
 
