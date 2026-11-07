@@ -1,0 +1,65 @@
+{
+    "filament_cost": [
+        "20"
+    ],
+    "filament_density": [
+        "1.21"
+    ],
+    "filament_extruder_variant": [
+        "Direct Drive Standard",
+        "Direct Drive High Flow",
+        "Direct Drive E3D High Flow"
+    ],
+    "filament_max_volumetric_speed": [
+        "3",
+        "3",
+        "3"
+    ],
+    "filament_retraction_length": [
+        "0.4",
+        "0.4",
+        "0.4"
+    ],
+    "filament_retraction_speed": [
+        "30",
+        "30",
+        "30"
+    ],
+    "filament_settings_id": [
+        "Overture TPU 95A"
+    ],
+    "filament_vendor": [
+        "Overture"
+    ],
+    "filament_z_hop": [
+        "0",
+        "0",
+        "0"
+    ],
+    "from": "User",
+    "hot_plate_temp": [
+        "35"
+    ],
+    "hot_plate_temp_initial_layer": [
+        "40"
+    ],
+    "inherits": "Generic TPU @BBL P2S",
+    "name": "Overture TPU 95A",
+    "nozzle_temperature": [
+        "225",
+        "225",
+        "225"
+    ],
+    "nozzle_temperature_initial_layer": [
+        "230",
+        "230",
+        "230"
+    ],
+    "textured_plate_temp": [
+        "35"
+    ],
+    "textured_plate_temp_initial_layer": [
+        "40"
+    ],
+    "version": "2.8.0.5"
+}
