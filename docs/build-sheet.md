@@ -29,7 +29,7 @@ The lids snap over the cases to protect the keys during storage and travel: bump
 
 ### Printing
 
-- The cases, plates, Touch ID parts and left lid were printed in **PLA**; the right lid in clear **PETG**. Other materials can be used with suitable settings and clearance adjustments. Avoid leaving PLA parts in a hot car.
+- The cases, plates and Touch ID parts were printed in **PLA**, the lids in clear **PETG**. Either material works for the lids. Other materials can be used with suitable settings and clearance adjustments. Avoid leaving PLA parts in a hot car.
 - The palm rests are printed in **Overture TPU 95A** with a 0.6 mm nozzle; the 3MF carries the Bambu Studio settings. Expect "floating regions" warnings from tiny mesh slivers; they're safe to ignore. Matching [Bambu Studio presets](../hardware/cad/profiles) are included.
 - Print at **100% scale, in millimetres**. Select your own printer and material settings; some 3MF files include a Bambu Studio profile.
 - Check orientation and supports before slicing. Keep switch openings, insert pockets, and mating surfaces clean.
