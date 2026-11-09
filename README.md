@@ -22,7 +22,7 @@ I came to the Keyball61 from a [UHK 60](https://uhk.io/uhk60). The UHK 60 sold m
 - **ZMK v0.3.0**: upgraded from v0.2 for module support and input processors.
 - **PMW3610 trackball driver**: [kumamuk-git/zmk-pmw3610-driver](https://github.com/kumamuk-git/zmk-pmw3610-driver) with SPI. This allowed me to switch the trackball to vertical/side scroll on certain layers.
 - **Native auto-mouse**: `zip_temp_layer` input processor instead of driver-level automouse. Excludes click positions, respects typing idle.
-- **OLEDs**: [zmk-nice-oled](https://github.com/mctechnology17/zmk-nice-oled) module, vertical layout, battery % and sleep. I plan to work on this more soon.
+- **Status screens**: our own module (`modules/status-screen`) draws labelled blocks for battery, output, layer, mods and Touch ID, with layouts for the 128×32 OLEDs and the nice!view.
 - **BLE tuned**: optimized for Mac OS bluetooth connectivity and fixing latency issues. 
 
 ## Hardware Mods
@@ -40,7 +40,7 @@ The `keyball61_nv` shield runs the bought Keyball61 PCB with nice!views in place
 | Left | pm9 (P1.06): the last pin on the TX0 side, farthest from USB | pm1 is the Touch ID enable |
 | Right | pm1 (P0.06): the TX0 pin | the only free controller pin on this half |
 
-Build artifacts are `keyball61_nv_left nice_view` and `keyball61_nv_right nice_view`. They show ZMK's stock nice!view screen; the custom OLED screens in `modules/status-screen` aren't ported.
+Build artifacts are `keyball61_nv_left nice_view` and `keyball61_nv_right nice_view`. They use the same status screen module as the OLEDs (`modules/status-screen`), with a layout drawn for the nice!view's 68×160 portrait screen. To preview the layouts without hardware, run `python3 modules/status-screen/scripts/preview.py <out-dir>`; it builds the firmware's drawing code on your Mac and writes PNGs.
 
 ## Mouseless thumb key
 

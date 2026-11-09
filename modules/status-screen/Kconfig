@@ -1,11 +1,20 @@
 config KEYBALL61_STATUS_SCREEN
-	bool "Keyball61 OLED status screen"
+	bool "Keyball61 status screen"
 	depends on ZMK_DISPLAY && ZMK_DISPLAY_STATUS_SCREEN_CUSTOM
 	select LV_USE_IMG
 	select LV_USE_CANVAS
 	help
-	  Draws both halves' 128x32 OLEDs in labelled blocks, read in portrait.
+	  Draws both halves' displays in labelled blocks, read in portrait.
 	  The right half shows both batteries, the output, the active layer and the
 	  held modifiers; the left half shows its battery, its link to the right
-	  half and Touch ID. Replaces zmk-nice-oled's widgets, so set
-	  CONFIG_NICE_OLED_WIDGET_STATUS=n alongside it.
+	  half and Touch ID. Replaces zmk-nice-oled's widgets on the OLEDs (set
+	  CONFIG_NICE_OLED_WIDGET_STATUS=n alongside it) and ZMK's nice!view
+	  widget (set CONFIG_NICE_VIEW_WIDGET_STATUS=n).
+
+config KEYBALL61_STATUS_SCREEN_NICE_VIEW
+	bool "Lay the status screen out for a 160x68 nice!view"
+	depends on KEYBALL61_STATUS_SCREEN
+	default y if SHIELD_NICE_VIEW
+	help
+	  Uses layout_nice_view.c, read in portrait (68x160), instead of the
+	  128x32 OLED layout.

@@ -1,14 +1,7 @@
 /*
- * Right half (central): battery for both halves, output, layer and held mods.
- *
- *   BAT  [bolt]   this half's battery, big, then the left half's
- *   BT n / USB    LINKED, SEARCH or PAIR / WIRED
- *   LAYER         highest active layer's name
- *   MODS          CTL OPT CMD SFT, lit while held
+ * Right half (central): tracks both batteries, the output, the layer and the
+ * held mods for layout_central().
  */
-
-#include <stdio.h>
-#include <string.h>
 
 #include <zephyr/kernel.h>
 #include <zephyr/sys/atomic.h>
@@ -27,7 +20,7 @@
 #include <zmk/events/layer_state_changed.h>
 #include <zmk/keymap.h>
 
-#include "draw.h"
+#include "layout.h"
 #include "status_screen.h"
 
 // Modifier keys held down, as MOD_* bits; tracked from key events rather than
@@ -37,114 +30,52 @@ static atomic_t held_mods;
 // The left half's battery; 0 until it first reports
 static uint8_t peripheral_battery;
 
-static const struct {
-    const char *label;
-    const struct glyph *icon;
-    uint8_t mods;
-} mod_rows[] = {
-    {"CTL", &icon_ctl, MOD_LCTL | MOD_RCTL},
-    {"OPT", &icon_opt, MOD_LALT | MOD_RALT},
-    {"CMD", &icon_cmd, MOD_LGUI | MOD_RGUI},
-    {"SFT", &icon_sft, MOD_LSFT | MOD_RSFT},
-};
+static uint8_t status_mods(void) {
+    uint8_t held = atomic_get(&held_mods);
+    uint8_t mods = 0;
 
-// Names too wide for the screen, as they're shown
-static const struct {
-    const char *name;
-    const char *shown;
-} layer_short_names[] = {
-    {"FUNCTION", "FN"},
-    {"HSCROLL", "HSCRL"},
-};
-
-static void draw_battery(void) {
-    draw_header("BAT", 0, NULL, status_screen_charging());
-    draw_big_percent(status_screen_battery_level(), 11);
-
-    char text[8];
-    if (peripheral_battery > 0) {
-        snprintf(text, sizeof(text), "L %u%%", peripheral_battery);
-    } else {
-        strcpy(text, "L --");
+    if (held & (MOD_LCTL | MOD_RCTL)) {
+        mods |= STATUS_MOD_CTL;
     }
-    draw_text_centered(text, 22, true);
-}
-
-static void draw_output(void) {
-    struct zmk_endpoint_instance endpoint = zmk_endpoints_selected();
-
-    if (endpoint.transport == ZMK_TRANSPORT_USB) {
-        draw_header("USB", 28, NULL, false);
-        draw_text_centered("WIRED", 40, true);
-        return;
+    if (held & (MOD_LALT | MOD_RALT)) {
+        mods |= STATUS_MOD_OPT;
     }
-
-    char profile[12];
-    snprintf(profile, sizeof(profile), "%d", endpoint.ble.profile_index + 1);
-    draw_header("BT", 28, profile, false);
-
-    if (zmk_ble_active_profile_is_connected()) {
-        draw_text_centered("LINKED", 40, true);
-    } else if (zmk_ble_active_profile_is_open()) {
-        draw_text_centered("PAIR", 40, true);
-    } else {
-        draw_text_centered("SEARCH", 40, true);
+    if (held & (MOD_LGUI | MOD_RGUI)) {
+        mods |= STATUS_MOD_CMD;
     }
-}
-
-static void draw_layer(void) {
-    draw_header("LAYER", 52, NULL, false);
-
-    zmk_keymap_layer_index_t index = zmk_keymap_highest_layer_active();
-    const char *name = zmk_keymap_layer_name(zmk_keymap_layer_index_to_id(index));
-
-    char text[12];
-    if (name == NULL || name[0] == '\0') {
-        snprintf(text, sizeof(text), "%u", index);
-    } else {
-        for (size_t i = 0; i < ARRAY_SIZE(layer_short_names); i++) {
-            if (strcmp(name, layer_short_names[i].name) == 0) {
-                name = layer_short_names[i].shown;
-                break;
-            }
-        }
-
-        size_t len = 0;
-        for (; name[len] != '\0' && len < sizeof(text) - 1; len++) {
-            char c = name[len];
-            text[len] = (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c;
-        }
-        text[len] = '\0';
-
-        // Cut anything else that doesn't fit
-        while (len > 1 && draw_text_width(text) > SCREEN_W) {
-            text[--len] = '\0';
-        }
+    if (held & (MOD_LSFT | MOD_RSFT)) {
+        mods |= STATUS_MOD_SFT;
     }
-    draw_text_centered(text, 64, true);
-}
-
-static void draw_mods(void) {
-    draw_header("MODS", 76, NULL, false);
-
-    uint8_t mods = atomic_get(&held_mods);
-    for (size_t i = 0; i < ARRAY_SIZE(mod_rows); i++) {
-        int y = 88 + i * 10;
-        bool held = mods & mod_rows[i].mods;
-
-        if (held) {
-            draw_rect(0, y - 1, SCREEN_W, 9, true);
-        }
-        draw_glyph(mod_rows[i].icon, 2, y - 1, !held);
-        draw_text(mod_rows[i].label, 15, y + 1, !held);
-    }
+    return mods;
 }
 
 void status_screen_draw(void) {
-    draw_battery();
-    draw_output();
-    draw_layer();
-    draw_mods();
+    struct zmk_endpoint_instance endpoint = zmk_endpoints_selected();
+    zmk_keymap_layer_index_t layer = zmk_keymap_highest_layer_active();
+
+    struct central_status status = {
+        .battery = status_screen_battery_level(),
+        .charging = status_screen_charging(),
+        .peripheral_battery = peripheral_battery,
+        .layer_name = zmk_keymap_layer_name(zmk_keymap_layer_index_to_id(layer)),
+        .layer_index = layer,
+        .mods = status_mods(),
+    };
+
+    if (endpoint.transport == ZMK_TRANSPORT_USB) {
+        status.output = STATUS_OUTPUT_USB;
+    } else {
+        status.profile = endpoint.ble.profile_index + 1;
+        if (zmk_ble_active_profile_is_connected()) {
+            status.output = STATUS_OUTPUT_BT_LINKED;
+        } else if (zmk_ble_active_profile_is_open()) {
+            status.output = STATUS_OUTPUT_BT_PAIR;
+        } else {
+            status.output = STATUS_OUTPUT_BT_SEARCH;
+        }
+    }
+
+    layout_central(&status);
 }
 
 static int keycode_listener_cb(const zmk_event_t *eh) {

@@ -1,8 +1,9 @@
 /*
- * Status screen for the Keyball61 OLEDs, replacing zmk-nice-oled's widgets.
- * Each half draws a portrait 32x128 frame (draw.h) in labelled blocks; this file
- * owns the LVGL canvas, turns the frame into the landscape 128x32 panel and
- * tracks this half's battery, which both halves show.
+ * Status screen for the Keyball61's OLEDs or nice!views, replacing the
+ * zmk-nice-oled and nice_view widgets. Each half draws a portrait frame
+ * (draw.h) through its layout (layout.h); this file owns the LVGL canvas, turns
+ * the frame into the landscape panel and tracks this half's battery, which
+ * both halves show.
  */
 
 #include <zephyr/device.h>
@@ -26,7 +27,8 @@
 #define PANEL_W SCREEN_H
 #define PANEL_H SCREEN_W
 
-// The panel's overlay sets inversion-on, so a white canvas pixel shows dark
+// Black is lit: the OLED's overlay sets inversion-on, so white shows dark there,
+// and the nice!view draws black as dark ink on its reflective panel
 #define COLOR_LIT lv_color_black()
 #define COLOR_DARK lv_color_white()
 
