@@ -134,6 +134,10 @@ class Keymap:
             hold, tap = binding.params
             if ht.hold == "mo" and hold.isdigit() and int(hold) < len(self.layers):
                 hold = self.layers[int(hold)][0]
+            if ht.tap == "none":
+                return f"hold {hold}"
+            if ht.tap != "kp":
+                tap = ht.tap  # the tap runs its own behavior; the parameter is unused
             return f"{tap}/{hold}"
         return binding.label
 
