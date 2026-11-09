@@ -22,5 +22,5 @@ jobs:
       output_folder: "keymap-drawer"
       destination: "both"
       parse_args: ""  # map of extra args to pass to `keymap parse`, e.g. "corne:'-l Def Lwr Rse' cradio:''"
-      # Both variants share a layout; the workflow parser requires no space after ':'.
-      draw_args: "keyball61_ble:'-j config/keyball61.json'"
+      # All variants share a layout; the workflow parser requires no space after ':'.
+      draw_args: "keyball61_ble:'-j config/keyball61.json' keyball61_nv:'-j config/keyball61.json'"
