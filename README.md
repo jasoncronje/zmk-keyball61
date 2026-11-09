@@ -33,12 +33,12 @@ I've printed custom cases, combined MX switch plates with bottom-access screws, 
 
 ## nice!view Retrofit
 
-The `keyball61_nv` shield runs the bought Keyball61 PCB with nice!views in place of the OLEDs. The OLED header's SDA and SCL become the nice!view's MOSI and SCK, so four of its five pins go to the header as before (MOSI to SDA, SCK to SCL, VCC to VCC, GND to GND). CS has no header pin and needs a hand-soldered wire:
+The `keyball61_nv` shield runs the bought Keyball61 PCB with nice!views in place of the OLEDs. The OLED header's SDA and SCL become the nice!view's MOSI and SCK, so four of its five pins go to the header as before (MOSI to SDA, SCK to SCL, VCC to VCC, GND to GND). CS has no header pin and needs a hand-soldered wire. The PCB is labelled with the AVR pin names (D3 is TX0, D1/D0 are the OLED's SDA/SCL), so go by the pad names below:
 
 | Half | nice!view CS goes to | Why |
 |---|---|---|
-| Left | pm9 (P1.06): the last pin on the TX0 side, farthest from USB | pm1 is the Touch ID enable |
-| Right | pm1 (P0.06): the TX0 pin | the only free controller pin on this half |
+| Left | pm1 (P0.06): the pad marked D3/TX0 | the Touch ID enable moves to pm9 (P1.06), the pad marked B5, last on that edge |
+| Right | pm1 (P0.06): the pad marked D3/TX0 | the only free controller pin on this half |
 
 Build artifacts are `keyball61_nv_left nice_view` and `keyball61_nv_right nice_view`. They use the same status screen module as the OLEDs (`modules/status-screen`), with a layout drawn for the nice!view's 68×160 portrait screen. To preview the layouts without hardware, run `python3 modules/status-screen/scripts/preview.py <out-dir>`; it builds the firmware's drawing code on your Mac and writes PNGs.
 

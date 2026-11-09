@@ -8,8 +8,12 @@
 
 / {
     zephyr,user {
-        /* Touch ID boost converter's En pad, wired to the pin marked D3/TX0 */
-        touchid-en-gpios = <&pro_micro 1 GPIO_ACTIVE_HIGH>;
+        /*
+         * Touch ID boost converter's En pad, wired to pm9 (P1.06): the pad
+         * marked B5, last on the D3/TX0 edge. Moved off D3/TX0 (pm1) for the
+         * nice!view's CS.
+         */
+        touchid-en-gpios = <&pro_micro 9 GPIO_ACTIVE_HIGH>;
     };
 };
 
@@ -35,7 +39,7 @@
 /*
  * nice!view on SPI0, on the old OLED header: MOSI = SDA pm2 (P0.17),
  * SCK = SCL pm3 (P0.20). CS has no header pin, so it is a hand-wired lead
- * to pm9 (P1.06, last pin on the TX0 side), since pm1 is the Touch ID enable.
+ * to pm1 (P0.06, the pad marked D3/TX0), as on the right half.
  * The display has no MISO; P0.25 is unused.
  */
 &pinctrl {
@@ -62,7 +66,7 @@ nice_view_spi: &spi0 {
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&pro_micro 9 GPIO_ACTIVE_HIGH>;
+    cs-gpios = <&pro_micro 1 GPIO_ACTIVE_HIGH>;
 };
 
 /* SPI0 and I2C0 share one peripheral on the nRF52840. */
