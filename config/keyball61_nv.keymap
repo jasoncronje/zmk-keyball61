@@ -1,0 +1,2 @@
+/* Keyball61 nice!view uses the same keymap as keyball61. */
+#include "keyball61.keymap"

@@ -1,0 +1,7 @@
+/*
+ * Keyball61 nice!view: the bought Keyball61 PCB with its OLEDs swapped for
+ * nice!views. Same layout, transform and matrix as keyball61 and
+ * keyball61_ble; the display is chosen by the nice_view shield.
+ */
+
+#include "../keyball61_ble/keyball61_ble.dtsi"

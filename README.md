@@ -31,6 +31,17 @@ I've printed custom cases, combined MX switch plates with bottom-access screws, 
 
 ![My Keyball61 build](docs/keyball61-trackball-amber.jpg)
 
+## nice!view Retrofit
+
+The `keyball61_nv` shield runs the bought Keyball61 PCB with nice!views in place of the OLEDs. The OLED header's SDA and SCL become the nice!view's MOSI and SCK, so four of its five pins go to the header as before (MOSI to SDA, SCK to SCL, VCC to VCC, GND to GND). CS has no header pin and needs a hand-soldered wire:
+
+| Half | nice!view CS goes to | Why |
+|---|---|---|
+| Left | pm9 (P1.06): the last pin on the TX0 side, farthest from USB | pm1 is the Touch ID enable |
+| Right | pm1 (P0.06): the TX0 pin | the only free controller pin on this half |
+
+Build artifacts are `keyball61_nv_left nice_view` and `keyball61_nv_right nice_view`. They show ZMK's stock nice!view screen; the custom OLED screens in `modules/status-screen` aren't ported.
+
 ## Mouseless thumb key
 
 The right function-layer thumb key drives Mouseless and holds the FUNCTION layer:

@@ -1,0 +1,8 @@
+/*
+ * The right half matches keyball61_ble_right pin for pin: the old OLED
+ * header's SDA pm2 (P0.17) and SCL pm0 (P0.08) become the nice!view's MOSI
+ * and SCK, and CS is a hand-wired lead to pm1 (P0.06, the TX0 pin), the only
+ * free controller pin on this half.
+ */
+
+#include "../keyball61_ble/keyball61_ble_right.overlay"
