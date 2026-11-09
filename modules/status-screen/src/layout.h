@@ -51,6 +51,8 @@ struct peripheral_status {
     // 0 when no off countdown is running
     uint32_t touchid_remaining_ms;
     uint32_t touchid_off_delay_ms;
+    // The right half's active layer (layer_sync.c); NULL until it first arrives
+    const char *layer_name;
 };
 
 // Redraws through the Touch ID off countdown (peripheral.c); the OLED's
@@ -65,8 +67,8 @@ struct peripheral_status {
 void layout_central(const struct central_status *status);
 void layout_peripheral(const struct peripheral_status *status);
 
-// The layer's name as shown at this text scale within max_width: uppercased,
+// A layer's name as shown at this text scale within max_width: uppercased,
 // FUNCTION as FN and HSCROLL as HSCRL when too wide, anything else cut to fit;
-// its number if unnamed
-void layout_layer_text(const struct central_status *status, int scale, int max_width, char *text,
+// its index if unnamed
+void layout_layer_text(const char *name, uint8_t index, int scale, int max_width, char *text,
                        size_t size);

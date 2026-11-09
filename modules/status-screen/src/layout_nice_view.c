@@ -13,6 +13,7 @@
  * Left half:
  *   BAT  [bolt]   this half's battery, big
  *   LINK          OK or LOST
+ *   LAYER         the right half's layer, -- until it arrives
  *   TOUCH ID      ON or OFF when forced; in auto, the minutes left before it
  *                 switches off, READY or ASLEEP
  */
@@ -60,12 +61,15 @@ static void draw_output(const struct central_status *s, int y) {
     draw_text_centered_scaled(state, VALUE_Y(y), VALUE_SCALE, true);
 }
 
-static void draw_layer(const struct central_status *s, int y) {
+// NULL name: not known yet
+static void draw_layer(const char *name, uint8_t index, int y) {
     draw_header("LAYER", y, NULL, false);
 
-    char text[12];
-    // Kept off the edges: HSCROLL would fill the width exactly
-    layout_layer_text(s, VALUE_SCALE, SCREEN_W - 6, text, sizeof(text));
+    char text[12] = "--";
+    if (name != NULL) {
+        // Kept off the edges: HSCROLL would fill the width exactly
+        layout_layer_text(name, index, VALUE_SCALE, SCREEN_W - 6, text, sizeof(text));
+    }
     draw_text_centered_scaled(text, VALUE_Y(y), VALUE_SCALE, true);
 }
 
@@ -106,7 +110,8 @@ static void draw_mods(const struct central_status *s, int y) {
 void layout_central(const struct central_status *status) {
     draw_battery(status->battery, status->charging);
     draw_output(status, SECOND_Y);
-    draw_layer(status, THIRD_Y);
+    // This half always knows its layer: "" shows an unnamed layer's index
+    draw_layer(status->layer_name ? status->layer_name : "", status->layer_index, THIRD_Y);
     draw_mods(status, FOURTH_Y);
 }
 
@@ -137,7 +142,10 @@ void layout_peripheral(const struct peripheral_status *status) {
     draw_text_centered_scaled(status->linked ? "OK" : "LOST", VALUE_Y(SECOND_Y), VALUE_SCALE,
                               true);
 
+    // The right half sends an unnamed layer's index as its name
+    draw_layer(status->layer_name, 0, THIRD_Y);
+
     if (status->touchid) {
-        draw_touchid(status, THIRD_Y);
+        draw_touchid(status, FOURTH_Y);
     }
 }

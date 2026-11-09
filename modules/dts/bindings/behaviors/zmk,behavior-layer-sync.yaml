@@ -1,0 +1,8 @@
+description: |
+  Hands the active layer's name to the left half for its status screen. Not
+  for keymaps: the right half's status screen invokes it on each layer change,
+  with the name packed into both params.
+
+compatible: "zmk,behavior-layer-sync"
+
+include: two_param.yaml

@@ -1,9 +1,13 @@
 /*
- * Left half (peripheral): tracks its battery, its link to the right half and
- * Touch ID for layout_peripheral(), and redraws through the Touch ID countdown.
+ * Left half (peripheral): tracks its battery, its link to the right half, the
+ * right half's layer and Touch ID for layout_peripheral(), and redraws through
+ * the Touch ID countdown.
  */
 
+#include <string.h>
+
 #include <zephyr/kernel.h>
+#include <zephyr/spinlock.h>
 
 #include <zmk/display.h>
 #include <zmk/event_manager.h>
@@ -36,8 +40,29 @@ void keyball61_touchid_display_update(void) {
 }
 #endif
 
+// The right half's layer name, from layer_sync.c on the split link's thread
+static struct k_spinlock layer_lock;
+static char layer_name[9];
+static bool layer_known;
+
+void status_screen_set_layer_name(const char *name) {
+    K_SPINLOCK(&layer_lock) {
+        strncpy(layer_name, name, sizeof(layer_name) - 1);
+        layer_known = true;
+    }
+    status_screen_redraw();
+}
+
 void status_screen_draw(void) {
+    char layer[sizeof(layer_name)];
+    bool known;
+    K_SPINLOCK(&layer_lock) {
+        strcpy(layer, layer_name);
+        known = layer_known;
+    }
+
     struct peripheral_status status = {
+        .layer_name = known ? layer : NULL,
         .battery = status_screen_battery_level(),
         .charging = status_screen_charging(),
         .linked = zmk_split_bt_peripheral_is_connected(),

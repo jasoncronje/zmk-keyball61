@@ -71,7 +71,7 @@ static void draw_layer(const struct central_status *s) {
     draw_header("LAYER", 52, NULL, false);
 
     char text[12];
-    layout_layer_text(s, 1, SCREEN_W, text, sizeof(text));
+    layout_layer_text(s->layer_name, s->layer_index, 1, SCREEN_W, text, sizeof(text));
     draw_text_centered(text, 64, true);
 }
 

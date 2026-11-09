@@ -24,12 +24,10 @@ static void copy_upper(const char *name, char *text, size_t size) {
     text[len] = '\0';
 }
 
-void layout_layer_text(const struct central_status *status, int scale, int max_width, char *text,
+void layout_layer_text(const char *name, uint8_t index, int scale, int max_width, char *text,
                        size_t size) {
-    const char *name = status->layer_name;
-
     if (name == NULL || name[0] == '\0') {
-        snprintf(text, size, "%u", status->layer_index);
+        snprintf(text, size, "%u", index);
         return;
     }
 

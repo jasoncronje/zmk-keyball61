@@ -63,6 +63,7 @@ int main(void) {
                                      .touchid_on = true,
                                      .touchid_remaining_ms = 9 * 60 * 1000,
                                      .touchid_off_delay_ms = delay,
+                                     .layer_name = "MAIN",
                                  });
     peripheral("left-always-on", (struct peripheral_status){
                                      .battery = 100,
@@ -72,6 +73,7 @@ int main(void) {
                                      .touchid_mode = KEYBALL61_TOUCHID_ON,
                                      .touchid_on = true,
                                      .touchid_off_delay_ms = delay,
+                                     .layer_name = "FUNCTION",
                                  });
     peripheral("left-asleep", (struct peripheral_status){
                                   .battery = 41,

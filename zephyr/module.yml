@@ -3,4 +3,5 @@ build:
   cmake: modules
   kconfig: modules/Kconfig
   settings:
-    dts_root: modules/touchid-power
+    # dts/bindings and include/dt-bindings for both modules
+    dts_root: modules
