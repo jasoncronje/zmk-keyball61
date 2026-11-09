@@ -13,7 +13,8 @@
  * Left half:
  *   BAT  [bolt]   this half's battery, big
  *   LINK          OK or LOST
- *   TOUCH ID  A/ON/OFF   the minutes left before it switches off, READY or ASLEEP
+ *   TOUCH ID      ON or OFF when forced; in auto, the minutes left before it
+ *                 switches off, READY or ASLEEP
  */
 
 #include <stdio.h>
@@ -109,18 +110,19 @@ void layout_central(const struct central_status *status) {
     draw_mods(status, FOURTH_Y);
 }
 
+// The mode when it's forced on or off; in auto, the minutes left before it
+// switches off, READY, or ASLEEP once off
 static void draw_touchid(const struct peripheral_status *s, int y) {
-    static const char *const mode_labels[] = {
-        [KEYBALL61_TOUCHID_AUTO] = "A",
-        [KEYBALL61_TOUCHID_ON] = "ON",
-        [KEYBALL61_TOUCHID_OFF] = "OFF",
-    };
-    draw_header("TOUCH ID", y, mode_labels[s->touchid_mode], false);
+    draw_header("TOUCH ID", y, NULL, false);
 
     char text[8];
-    if (!s->touchid_on) {
+    if (s->touchid_mode == KEYBALL61_TOUCHID_ON) {
+        strcpy(text, "ON");
+    } else if (s->touchid_mode == KEYBALL61_TOUCHID_OFF) {
+        strcpy(text, "OFF");
+    } else if (!s->touchid_on) {
         strcpy(text, "ASLEEP");
-    } else if (s->touchid_mode != KEYBALL61_TOUCHID_ON && s->touchid_remaining_ms > 0) {
+    } else if (s->touchid_remaining_ms > 0) {
         snprintf(text, sizeof(text), "%uM", DIV_ROUND_UP(s->touchid_remaining_ms, 60000U));
     } else {
         strcpy(text, "READY");
