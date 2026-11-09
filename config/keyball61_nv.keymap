@@ -1,13 +1,2 @@
 /* Keyball61 nice!view uses the same keymap as keyball61. */
 #include "keyball61.keymap"
-
-/*
- * A quarter of the nice_view shield's 1 MHz SPI clock. On the left half, the
- * Touch ID boost converter's switching noise corrupted lines in transit (lines
- * that moved on each redraw, gone with Touch ID off); 500 kHz wasn't enough.
- * Set here because ZMK applies the keymap after the nice_view shield's
- * overlay, which sets the 1 MHz.
- */
-&nice_view {
-    spi-max-frequency = <250000>;
-};

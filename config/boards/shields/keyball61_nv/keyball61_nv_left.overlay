@@ -44,11 +44,6 @@
             psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
                 <NRF_PSEL(SPIM_MOSI, 0, 17)>,
                 <NRF_PSEL(SPIM_MISO, 0, 25)>;
-            /*
-             * High drive, so the Touch ID boost converter's switching noise
-             * is less able to flip bits on the hand-wired leads
-             */
-            nordic,drive-mode = <NRF_DRIVE_H0H1>;
         };
     };
 
