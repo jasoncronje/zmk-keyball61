@@ -1,10 +1,12 @@
 /*
  * The 160x68 nice!view, read in portrait (68x160) in labelled blocks: the
- * OLED's 5 px headers, with values drawn twice the size.
+ * OLED's 5 px headers, with values drawn twice the size. Both halves start
+ * with the same battery block, and the right half's BT block lines up with the
+ * left half's LINK.
  *
  * Right half:
- *   BT n / USB    LINKED, SEARCH or PAIR / WIRED
  *   BAT  [bolt]   this half's battery, big, then the left half's
+ *   BT n / USB    LINKED, SEARCH or PAIR / WIRED
  *   LAYER         highest active layer's name
  *   MODS          2x2 grid of the Mac modifier symbols, a cell lit while held
  *
@@ -27,10 +29,26 @@
 // Values are the 5 px font at this scale
 #define VALUE_SCALE 2
 
+// Each block: a 9 px header, then its value 2 px below
+#define VALUE_Y(y) ((y) + 11)
+
+// Block tops, matching across the halves
+#define BATTERY_Y 0
+#define LINK_Y 44
+#define THIRD_Y 68
+#define FOURTH_Y 92
+
+// The battery block on both halves: header and the big percentage, with room
+// below for the right half's line for the left half
+static void draw_battery_block(uint8_t level, bool charging) {
+    draw_header("BAT", BATTERY_Y, NULL, charging);
+    draw_big_percent_scaled(level, VALUE_Y(BATTERY_Y), 2);
+}
+
 static void draw_output(const struct central_status *s, int y) {
     if (s->output == STATUS_OUTPUT_USB) {
         draw_header("USB", y, NULL, false);
-        draw_text_centered_scaled("WIRED", y + 11, VALUE_SCALE, true);
+        draw_text_centered_scaled("WIRED", VALUE_Y(y), VALUE_SCALE, true);
         return;
     }
 
@@ -41,12 +59,11 @@ static void draw_output(const struct central_status *s, int y) {
     const char *state = s->output == STATUS_OUTPUT_BT_LINKED ? "LINKED"
                         : s->output == STATUS_OUTPUT_BT_PAIR ? "PAIR"
                                                              : "SEARCH";
-    draw_text_centered_scaled(state, y + 11, VALUE_SCALE, true);
+    draw_text_centered_scaled(state, VALUE_Y(y), VALUE_SCALE, true);
 }
 
-static void draw_battery(const struct central_status *s, int y) {
-    draw_header("BAT", y, NULL, s->charging);
-    draw_big_percent_scaled(s->battery, y + 11, 2);
+static void draw_battery(const struct central_status *s) {
+    draw_battery_block(s->battery, s->charging);
 
     char text[8];
     if (s->peripheral_battery > 0) {
@@ -54,7 +71,8 @@ static void draw_battery(const struct central_status *s, int y) {
     } else {
         strcpy(text, "L --");
     }
-    draw_text_centered_scaled(text, y + 33, VALUE_SCALE, true);
+    // Under the 18 px digits
+    draw_text_centered_scaled(text, VALUE_Y(BATTERY_Y) + 20, VALUE_SCALE, true);
 }
 
 static void draw_layer(const struct central_status *s, int y) {
@@ -63,7 +81,7 @@ static void draw_layer(const struct central_status *s, int y) {
     char text[12];
     // Kept off the edges: HSCROLL would fill the width exactly
     layout_layer_text(s, VALUE_SCALE, SCREEN_W - 6, text, sizeof(text));
-    draw_text_centered_scaled(text, y + 11, VALUE_SCALE, true);
+    draw_text_centered_scaled(text, VALUE_Y(y), VALUE_SCALE, true);
 }
 
 #define MOD_CELL_W 33
@@ -85,7 +103,7 @@ static void draw_mods(const struct central_status *s, int y) {
 
     for (size_t i = 0; i < ARRAY_SIZE(mod_cells); i++) {
         int x = (i % 2) * (MOD_CELL_W + MOD_CELL_GAP);
-        int cy = y + 11 + (i / 2) * (MOD_CELL_H + MOD_CELL_GAP);
+        int cy = VALUE_Y(y) + (i / 2) * (MOD_CELL_H + MOD_CELL_GAP);
         bool held = s->mods & mod_cells[i].mods;
         const struct glyph *icon = mod_cells[i].icon;
 
@@ -100,10 +118,10 @@ static void draw_mods(const struct central_status *s, int y) {
 }
 
 void layout_central(const struct central_status *status) {
-    draw_output(status, 0);
-    draw_battery(status, 25);
-    draw_layer(status, 72);
-    draw_mods(status, 97);
+    draw_battery(status);
+    draw_output(status, LINK_Y);
+    draw_layer(status, THIRD_Y);
+    draw_mods(status, FOURTH_Y);
 }
 
 #define PRINT_SCALE 2
@@ -124,11 +142,11 @@ static void draw_touchid(const struct peripheral_status *s, int y) {
     draw_header("TID", y, mode_labels[s->touchid_mode], false);
 
     const struct glyph *print = s->touchid_on ? &icon_fingerprint_on : &icon_fingerprint_off;
-    int print_y = y + 11;
+    int print_y = VALUE_Y(y);
     draw_glyph_scaled(print, PRINT_X, print_y, PRINT_SCALE, true);
 
-    int bar_y = print_y + print->h * PRINT_SCALE + 3;
-    int text_y = bar_y + BAR_HEIGHT + 5;
+    int bar_y = print_y + print->h * PRINT_SCALE + 2;
+    int text_y = bar_y + BAR_HEIGHT + 3;
 
     if (s->touchid_mode == KEYBALL61_TOUCHID_ON) {
         for (int x = 0; x < LAYOUT_TOUCHID_BAR_WIDTH; x += DASH_PITCH) {
@@ -151,13 +169,12 @@ static void draw_touchid(const struct peripheral_status *s, int y) {
 }
 
 void layout_peripheral(const struct peripheral_status *status) {
-    draw_header("BAT", 0, NULL, status->charging);
-    draw_big_percent_scaled(status->battery, 11, 2);
+    draw_battery_block(status->battery, status->charging);
 
-    draw_header("LINK", 33, NULL, false);
-    draw_text_centered_scaled(status->linked ? "OK" : "LOST", 44, VALUE_SCALE, true);
+    draw_header("LINK", LINK_Y, NULL, false);
+    draw_text_centered_scaled(status->linked ? "OK" : "LOST", VALUE_Y(LINK_Y), VALUE_SCALE, true);
 
     if (status->touchid) {
-        draw_touchid(status, 58);
+        draw_touchid(status, THIRD_Y);
     }
 }
