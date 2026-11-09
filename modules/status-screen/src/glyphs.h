@@ -19,6 +19,7 @@ extern const struct glyph *const medium_font[96];
 extern const struct glyph *const big_digits[10];
 
 extern const struct glyph icon_bolt;
+extern const struct glyph icon_bolt_big;
 extern const struct glyph icon_ctl;
 extern const struct glyph icon_opt;
 extern const struct glyph icon_cmd;

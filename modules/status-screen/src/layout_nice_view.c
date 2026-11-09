@@ -5,13 +5,13 @@
  * halves.
  *
  * Right half:
- *   BAT  [bolt]   this half's battery, big
+ *   BAT           this half's battery, big; a big bolt while charging
  *   BT n / USB    LINKED, SEARCH or PAIR / WIRED
  *   LAYER         highest active layer's name
  *   MODS          2x2 grid of the Mac modifier symbols, a cell lit while held
  *
  * Left half:
- *   BAT  [bolt]   this half's battery, big
+ *   BAT           this half's battery, big; a big bolt while charging
  *   LINK          OK or LOST
  *   LAYER         the right half's layer, -- until it arrives
  *   TOUCH ID      ON or OFF when forced; in auto, the minutes left before it
@@ -39,9 +39,15 @@
 #define THIRD_Y (VALUE_Y(SECOND_Y) + 10 + 4)
 #define FOURTH_Y (VALUE_Y(THIRD_Y) + 10 + 4)
 
+// A big bolt instead of the level while charging
 static void draw_battery(uint8_t level, bool charging) {
-    draw_header("BAT", BATTERY_Y, NULL, charging);
-    draw_big_percent_scaled(level, VALUE_Y(BATTERY_Y), 2);
+    draw_header("BAT", BATTERY_Y, NULL, false);
+    if (charging) {
+        draw_glyph_scaled(&icon_bolt_big, (SCREEN_W - icon_bolt_big.w * 2) / 2,
+                          VALUE_Y(BATTERY_Y), 2, true);
+    } else {
+        draw_big_percent_scaled(level, VALUE_Y(BATTERY_Y), 2);
+    }
 }
 
 static void draw_output(const struct central_status *s, int y) {

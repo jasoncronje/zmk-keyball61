@@ -353,6 +353,9 @@ const struct glyph *const big_digits[10] = {
 static const uint32_t icon_bolt_rows[] = {0x3, 0x6, 0xc, 0x1f, 0x6, 0xc, 0x18, 0x10};
 const struct glyph icon_bolt = {.w = 5, .h = 8, .rows = icon_bolt_rows};
 
+static const uint32_t icon_bolt_big_rows[] = {0x7, 0xe, 0x1c, 0x38, 0x7f, 0x1c, 0x38, 0x70, 0x60};
+const struct glyph icon_bolt_big = {.w = 7, .h = 9, .rows = icon_bolt_big_rows};
+
 static const uint32_t icon_ctl_rows[] = {0x0, 0x0, 0x10, 0x28, 0x44, 0x82, 0x101, 0x0, 0x0};
 const struct glyph icon_ctl = {.w = 9, .h = 9, .rows = icon_ctl_rows};
 
