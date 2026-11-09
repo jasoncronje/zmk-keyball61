@@ -1,0 +1,26 @@
+config KEYBALL61_KEYLOG
+	bool "Stream key positions, keycodes and layers to the host over Raw HID"
+	default y
+	depends on RAW_HID
+	help
+	  For tools/keylog on the Mac. Streams only while the host keeps renewing
+	  its start command, so nothing goes out when the logger isn't running.
+	  On by default wherever Raw HID is (the raw_hid_adapter shield).
+
+config KEYBALL61_KEYLOG_BUFFER
+	int "Records held while waiting for the host link"
+	default 96
+	depends on KEYBALL61_KEYLOG
+
+config KEYBALL61_KEYLOG_FLUSH_MS
+	int "Longest wait before a partly filled report is sent (ms)"
+	default 30
+	depends on KEYBALL61_KEYLOG
+	help
+	  Records go out three per report. Waiting a little fills more reports,
+	  so the logger takes fewer host link slots away from the trackball.
+
+config KEYBALL61_KEYLOG_LEASE_MS
+	int "How long one start command keeps streaming on (ms)"
+	default 10000
+	depends on KEYBALL61_KEYLOG

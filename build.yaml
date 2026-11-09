@@ -30,5 +30,14 @@ include:
   - board: nice_nano_v2
     shield: keyball61_nv_right nice_view
     snippet: studio-rpc-usb-uart
+  # Key logger builds of the right (central) half: Raw HID + modules/keylog for tools/keylog
+  - board: nice_nano_v2
+    shield: keyball61_right nice_oled raw_hid_adapter
+    snippet: studio-rpc-usb-uart
+    artifact-name: keyball61_right-keylog-nice_nano_v2-zmk
+  - board: nice_nano_v2
+    shield: keyball61_nv_right nice_view raw_hid_adapter
+    snippet: studio-rpc-usb-uart
+    artifact-name: keyball61_nv_right-keylog-nice_nano_v2-zmk
   - board: nice_nano_v2
     shield: settings_reset
