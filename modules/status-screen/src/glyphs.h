@@ -12,6 +12,9 @@ struct glyph {
 // 5 px caps font, indexed by character - ' '; NULL where a character isn't drawn
 extern const struct glyph *const small_font[96];
 
+// 5x7 caps font, indexed the same way, for the nice!view's headers
+extern const struct glyph *const medium_font[96];
+
 // 6x9 digits, drawn on an 8 px pitch
 extern const struct glyph *const big_digits[10];
 

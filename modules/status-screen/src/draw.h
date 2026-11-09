@@ -14,9 +14,11 @@
 #ifdef CONFIG_KEYBALL61_STATUS_SCREEN_NICE_VIEW
 #define SCREEN_W 68
 #define SCREEN_H 160
+#define HEADER_H 11
 #else
 #define SCREEN_W 32
 #define SCREEN_H 128
+#define HEADER_H 9
 #endif
 
 void draw_clear(void);
@@ -37,7 +39,8 @@ void draw_text_centered(const char *text, int y, bool on);
 void draw_text_centered_scaled(const char *text, int y, int scale, bool on);
 void draw_text_right(const char *text, int right, int y, bool on);
 
-// A lit 9 px bar with a dark label on the left and optional text or bolt on the right
+// A lit HEADER_H bar with a dark label on the left and optional text or bolt on
+// the right; 5 px text on the OLED, 7 px on the nice!view
 void draw_header(const char *label, int y, const char *right, bool bolt);
 
 // A battery level in big digits with a small %, centred

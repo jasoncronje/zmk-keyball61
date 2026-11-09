@@ -53,11 +53,13 @@ struct peripheral_status {
     uint32_t touchid_off_delay_ms;
 };
 
-// Width of the Touch ID countdown bar; peripheral.c redraws once per pixel of it
+// Redraws through the Touch ID off countdown (peripheral.c); the OLED's
+// countdown bar is this many pixels wide, one per redraw. 60 keeps the
+// nice!view's minutes left within 15 s of the real time.
 #ifdef CONFIG_KEYBALL61_STATUS_SCREEN_NICE_VIEW
-#define LAYOUT_TOUCHID_BAR_WIDTH 60
+#define LAYOUT_TOUCHID_STEPS 60
 #else
-#define LAYOUT_TOUCHID_BAR_WIDTH 30
+#define LAYOUT_TOUCHID_STEPS 30
 #endif
 
 void layout_central(const struct central_status *status);

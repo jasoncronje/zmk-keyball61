@@ -161,6 +161,161 @@ const struct glyph *const small_font[96] = {
     ['-' - ' '] = &small_dash,
 };
 
+static const uint32_t medium_A_rows[] = {0xe, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x11};
+static const struct glyph medium_A = {.w = 5, .h = 7, .rows = medium_A_rows};
+
+static const uint32_t medium_B_rows[] = {0x1e, 0x11, 0x11, 0x1e, 0x11, 0x11, 0x1e};
+static const struct glyph medium_B = {.w = 5, .h = 7, .rows = medium_B_rows};
+
+static const uint32_t medium_C_rows[] = {0xe, 0x11, 0x10, 0x10, 0x10, 0x11, 0xe};
+static const struct glyph medium_C = {.w = 5, .h = 7, .rows = medium_C_rows};
+
+static const uint32_t medium_D_rows[] = {0x1e, 0x11, 0x11, 0x11, 0x11, 0x11, 0x1e};
+static const struct glyph medium_D = {.w = 5, .h = 7, .rows = medium_D_rows};
+
+static const uint32_t medium_E_rows[] = {0x1f, 0x10, 0x10, 0x1e, 0x10, 0x10, 0x1f};
+static const struct glyph medium_E = {.w = 5, .h = 7, .rows = medium_E_rows};
+
+static const uint32_t medium_F_rows[] = {0x1f, 0x10, 0x10, 0x1e, 0x10, 0x10, 0x10};
+static const struct glyph medium_F = {.w = 5, .h = 7, .rows = medium_F_rows};
+
+static const uint32_t medium_G_rows[] = {0xe, 0x11, 0x10, 0x17, 0x11, 0x11, 0xf};
+static const struct glyph medium_G = {.w = 5, .h = 7, .rows = medium_G_rows};
+
+static const uint32_t medium_H_rows[] = {0x11, 0x11, 0x11, 0x1f, 0x11, 0x11, 0x11};
+static const struct glyph medium_H = {.w = 5, .h = 7, .rows = medium_H_rows};
+
+static const uint32_t medium_I_rows[] = {0x7, 0x2, 0x2, 0x2, 0x2, 0x2, 0x7};
+static const struct glyph medium_I = {.w = 3, .h = 7, .rows = medium_I_rows};
+
+static const uint32_t medium_J_rows[] = {0x7, 0x2, 0x2, 0x2, 0x2, 0x12, 0xc};
+static const struct glyph medium_J = {.w = 5, .h = 7, .rows = medium_J_rows};
+
+static const uint32_t medium_K_rows[] = {0x11, 0x12, 0x14, 0x18, 0x14, 0x12, 0x11};
+static const struct glyph medium_K = {.w = 5, .h = 7, .rows = medium_K_rows};
+
+static const uint32_t medium_L_rows[] = {0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1f};
+static const struct glyph medium_L = {.w = 5, .h = 7, .rows = medium_L_rows};
+
+static const uint32_t medium_M_rows[] = {0x11, 0x1b, 0x15, 0x15, 0x11, 0x11, 0x11};
+static const struct glyph medium_M = {.w = 5, .h = 7, .rows = medium_M_rows};
+
+static const uint32_t medium_N_rows[] = {0x11, 0x11, 0x19, 0x15, 0x13, 0x11, 0x11};
+static const struct glyph medium_N = {.w = 5, .h = 7, .rows = medium_N_rows};
+
+static const uint32_t medium_O_rows[] = {0xe, 0x11, 0x11, 0x11, 0x11, 0x11, 0xe};
+static const struct glyph medium_O = {.w = 5, .h = 7, .rows = medium_O_rows};
+
+static const uint32_t medium_P_rows[] = {0x1e, 0x11, 0x11, 0x1e, 0x10, 0x10, 0x10};
+static const struct glyph medium_P = {.w = 5, .h = 7, .rows = medium_P_rows};
+
+static const uint32_t medium_Q_rows[] = {0xe, 0x11, 0x11, 0x11, 0x15, 0x12, 0xd};
+static const struct glyph medium_Q = {.w = 5, .h = 7, .rows = medium_Q_rows};
+
+static const uint32_t medium_R_rows[] = {0x1e, 0x11, 0x11, 0x1e, 0x14, 0x12, 0x11};
+static const struct glyph medium_R = {.w = 5, .h = 7, .rows = medium_R_rows};
+
+static const uint32_t medium_S_rows[] = {0xf, 0x10, 0x10, 0xe, 0x1, 0x1, 0x1e};
+static const struct glyph medium_S = {.w = 5, .h = 7, .rows = medium_S_rows};
+
+static const uint32_t medium_T_rows[] = {0x1f, 0x4, 0x4, 0x4, 0x4, 0x4, 0x4};
+static const struct glyph medium_T = {.w = 5, .h = 7, .rows = medium_T_rows};
+
+static const uint32_t medium_U_rows[] = {0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0xe};
+static const struct glyph medium_U = {.w = 5, .h = 7, .rows = medium_U_rows};
+
+static const uint32_t medium_V_rows[] = {0x11, 0x11, 0x11, 0x11, 0x11, 0xa, 0x4};
+static const struct glyph medium_V = {.w = 5, .h = 7, .rows = medium_V_rows};
+
+static const uint32_t medium_W_rows[] = {0x11, 0x11, 0x11, 0x15, 0x15, 0x15, 0xa};
+static const struct glyph medium_W = {.w = 5, .h = 7, .rows = medium_W_rows};
+
+static const uint32_t medium_X_rows[] = {0x11, 0x11, 0xa, 0x4, 0xa, 0x11, 0x11};
+static const struct glyph medium_X = {.w = 5, .h = 7, .rows = medium_X_rows};
+
+static const uint32_t medium_Y_rows[] = {0x11, 0x11, 0xa, 0x4, 0x4, 0x4, 0x4};
+static const struct glyph medium_Y = {.w = 5, .h = 7, .rows = medium_Y_rows};
+
+static const uint32_t medium_Z_rows[] = {0x1f, 0x1, 0x2, 0x4, 0x8, 0x10, 0x1f};
+static const struct glyph medium_Z = {.w = 5, .h = 7, .rows = medium_Z_rows};
+
+static const uint32_t medium_0_rows[] = {0xe, 0x11, 0x13, 0x15, 0x19, 0x11, 0xe};
+static const struct glyph medium_0 = {.w = 5, .h = 7, .rows = medium_0_rows};
+
+static const uint32_t medium_1_rows[] = {0x4, 0xc, 0x4, 0x4, 0x4, 0x4, 0xe};
+static const struct glyph medium_1 = {.w = 5, .h = 7, .rows = medium_1_rows};
+
+static const uint32_t medium_2_rows[] = {0xe, 0x11, 0x1, 0x2, 0x4, 0x8, 0x1f};
+static const struct glyph medium_2 = {.w = 5, .h = 7, .rows = medium_2_rows};
+
+static const uint32_t medium_3_rows[] = {0x1f, 0x2, 0x4, 0x2, 0x1, 0x11, 0xe};
+static const struct glyph medium_3 = {.w = 5, .h = 7, .rows = medium_3_rows};
+
+static const uint32_t medium_4_rows[] = {0x2, 0x6, 0xa, 0x12, 0x1f, 0x2, 0x2};
+static const struct glyph medium_4 = {.w = 5, .h = 7, .rows = medium_4_rows};
+
+static const uint32_t medium_5_rows[] = {0x1f, 0x10, 0x1e, 0x1, 0x1, 0x11, 0xe};
+static const struct glyph medium_5 = {.w = 5, .h = 7, .rows = medium_5_rows};
+
+static const uint32_t medium_6_rows[] = {0x6, 0x8, 0x10, 0x1e, 0x11, 0x11, 0xe};
+static const struct glyph medium_6 = {.w = 5, .h = 7, .rows = medium_6_rows};
+
+static const uint32_t medium_7_rows[] = {0x1f, 0x1, 0x2, 0x4, 0x8, 0x8, 0x8};
+static const struct glyph medium_7 = {.w = 5, .h = 7, .rows = medium_7_rows};
+
+static const uint32_t medium_8_rows[] = {0xe, 0x11, 0x11, 0xe, 0x11, 0x11, 0xe};
+static const struct glyph medium_8 = {.w = 5, .h = 7, .rows = medium_8_rows};
+
+static const uint32_t medium_9_rows[] = {0xe, 0x11, 0x11, 0xf, 0x1, 0x2, 0xc};
+static const struct glyph medium_9 = {.w = 5, .h = 7, .rows = medium_9_rows};
+
+static const uint32_t medium_space_rows[] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
+static const struct glyph medium_space = {.w = 3, .h = 7, .rows = medium_space_rows};
+
+static const uint32_t medium_dash_rows[] = {0x0, 0x0, 0x0, 0x1f, 0x0, 0x0, 0x0};
+static const struct glyph medium_dash = {.w = 5, .h = 7, .rows = medium_dash_rows};
+
+const struct glyph *const medium_font[96] = {
+    ['A' - ' '] = &medium_A,
+    ['B' - ' '] = &medium_B,
+    ['C' - ' '] = &medium_C,
+    ['D' - ' '] = &medium_D,
+    ['E' - ' '] = &medium_E,
+    ['F' - ' '] = &medium_F,
+    ['G' - ' '] = &medium_G,
+    ['H' - ' '] = &medium_H,
+    ['I' - ' '] = &medium_I,
+    ['J' - ' '] = &medium_J,
+    ['K' - ' '] = &medium_K,
+    ['L' - ' '] = &medium_L,
+    ['M' - ' '] = &medium_M,
+    ['N' - ' '] = &medium_N,
+    ['O' - ' '] = &medium_O,
+    ['P' - ' '] = &medium_P,
+    ['Q' - ' '] = &medium_Q,
+    ['R' - ' '] = &medium_R,
+    ['S' - ' '] = &medium_S,
+    ['T' - ' '] = &medium_T,
+    ['U' - ' '] = &medium_U,
+    ['V' - ' '] = &medium_V,
+    ['W' - ' '] = &medium_W,
+    ['X' - ' '] = &medium_X,
+    ['Y' - ' '] = &medium_Y,
+    ['Z' - ' '] = &medium_Z,
+    ['0' - ' '] = &medium_0,
+    ['1' - ' '] = &medium_1,
+    ['2' - ' '] = &medium_2,
+    ['3' - ' '] = &medium_3,
+    ['4' - ' '] = &medium_4,
+    ['5' - ' '] = &medium_5,
+    ['6' - ' '] = &medium_6,
+    ['7' - ' '] = &medium_7,
+    ['8' - ' '] = &medium_8,
+    ['9' - ' '] = &medium_9,
+    [' ' - ' '] = &medium_space,
+    ['-' - ' '] = &medium_dash,
+};
+
 static const uint32_t big_0_rows[] = {0xe, 0x11, 0x11, 0x13, 0x15, 0x19, 0x11, 0x11, 0xe};
 static const struct glyph big_0 = {.w = 6, .h = 9, .rows = big_0_rows};
 

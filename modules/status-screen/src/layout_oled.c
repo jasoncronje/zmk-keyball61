@@ -119,14 +119,14 @@ static void draw_touchid(const struct peripheral_status *s) {
                true);
 
     if (s->touchid_mode == KEYBALL61_TOUCHID_ON) {
-        for (int x = 0; x < LAYOUT_TOUCHID_BAR_WIDTH; x += DASH_PITCH) {
+        for (int x = 0; x < LAYOUT_TOUCHID_STEPS; x += DASH_PITCH) {
             draw_rect(PRINT_X + x, BAR_Y, DASH_WIDTH, BAR_HEIGHT, true);
         }
     } else if (s->touchid_on && s->touchid_remaining_ms > 0) {
-        int width = DIV_ROUND_UP((uint64_t)LAYOUT_TOUCHID_BAR_WIDTH * s->touchid_remaining_ms,
+        int width = DIV_ROUND_UP((uint64_t)LAYOUT_TOUCHID_STEPS * s->touchid_remaining_ms,
                                  s->touchid_off_delay_ms);
-        width = CLAMP(width, 1, LAYOUT_TOUCHID_BAR_WIDTH);
-        draw_rect(PRINT_X + (LAYOUT_TOUCHID_BAR_WIDTH - width) / 2, BAR_Y, width, BAR_HEIGHT,
+        width = CLAMP(width, 1, LAYOUT_TOUCHID_STEPS);
+        draw_rect(PRINT_X + (LAYOUT_TOUCHID_STEPS - width) / 2, BAR_Y, width, BAR_HEIGHT,
                   true);
 
         char minutes[8];

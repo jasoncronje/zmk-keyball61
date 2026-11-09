@@ -12,6 +12,16 @@ static uint8_t frame[SCREEN_H][ROW_BYTES];
 
 #define BIG_PITCH 8
 
+// Header bars: the 5 px font in a 9 px bar on the OLED, the 7 px one in an
+// 11 px bar on the nice!view
+#ifdef CONFIG_KEYBALL61_STATUS_SCREEN_NICE_VIEW
+#define HEADER_FONT medium_font
+#define HEADER_TEXT_H 7
+#else
+#define HEADER_FONT small_font
+#define HEADER_TEXT_H 5
+#endif
+
 void draw_clear(void) { memset(frame, 0, sizeof(frame)); }
 
 bool draw_get(int x, int y) {
@@ -62,16 +72,17 @@ void draw_glyph(const struct glyph *g, int x, int y, bool on) {
     draw_glyph_scaled(g, x, y, 1, on);
 }
 
-static const struct glyph *small_glyph(char c) {
+// Both fonts are indexed by character - ' ', with ARRAY_SIZE(small_font) entries
+static const struct glyph *font_glyph(const struct glyph *const *font, char c) {
     // Wraps around for anything below ' '
     unsigned int index = (unsigned char)c - ' ';
-    return index < ARRAY_SIZE(small_font) ? small_font[index] : NULL;
+    return index < ARRAY_SIZE(small_font) ? font[index] : NULL;
 }
 
-int draw_text_width_scaled(const char *text, int scale) {
+static int font_text_width(const struct glyph *const *font, const char *text, int scale) {
     int width = 0;
     for (const char *c = text; *c; c++) {
-        const struct glyph *g = small_glyph(*c);
+        const struct glyph *g = font_glyph(font, *c);
         if (g) {
             width += (g->w + 1) * scale;
         }
@@ -79,16 +90,25 @@ int draw_text_width_scaled(const char *text, int scale) {
     return width > 0 ? width - scale : 0;
 }
 
-int draw_text_width(const char *text) { return draw_text_width_scaled(text, 1); }
-
-void draw_text_scaled(const char *text, int x, int y, int scale, bool on) {
+static void font_text(const struct glyph *const *font, const char *text, int x, int y, int scale,
+                      bool on) {
     for (const char *c = text; *c; c++) {
-        const struct glyph *g = small_glyph(*c);
+        const struct glyph *g = font_glyph(font, *c);
         if (g) {
             draw_glyph_scaled(g, x, y, scale, on);
             x += (g->w + 1) * scale;
         }
     }
+}
+
+int draw_text_width_scaled(const char *text, int scale) {
+    return font_text_width(small_font, text, scale);
+}
+
+int draw_text_width(const char *text) { return draw_text_width_scaled(text, 1); }
+
+void draw_text_scaled(const char *text, int x, int y, int scale, bool on) {
+    font_text(small_font, text, x, y, scale, on);
 }
 
 void draw_text(const char *text, int x, int y, bool on) { draw_text_scaled(text, x, y, 1, on); }
@@ -107,12 +127,14 @@ void draw_text_right(const char *text, int right, int y, bool on) {
 }
 
 void draw_header(const char *label, int y, const char *right, bool bolt) {
-    draw_rect(0, y, SCREEN_W, 9, true);
-    draw_text(label, 2, y + 2, false);
+    draw_rect(0, y, SCREEN_W, HEADER_H, true);
+    int text_y = y + (HEADER_H - HEADER_TEXT_H) / 2;
+    font_text(HEADER_FONT, label, 2, text_y, 1, false);
     if (bolt) {
         draw_glyph(&icon_bolt, SCREEN_W - 7, y + 1, false);
     } else if (right) {
-        draw_text_right(right, SCREEN_W - 2, y + 2, false);
+        font_text(HEADER_FONT, right, SCREEN_W - 2 - font_text_width(HEADER_FONT, right, 1),
+                  text_y, 1, false);
     }
 }
 
