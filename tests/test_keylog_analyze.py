@@ -103,10 +103,29 @@ class KeylogAnalyzeTest(unittest.TestCase):
         # The Shift+Y the roll produced was deleted and replaced with u
         self.assertIn("| Y | 1 | 1 | 100.0% |", text)
         self.assertIn("| Y | u | 1 |", text)
-        self.assertIn("A/LSHIFT → Y (held 120 ms, other key released 20 ms before) ×1", text)
+        self.assertIn("A/LSHIFT → Y (199 ms after the previous key, held 120 ms, other key released 20 ms before) ×1", text)
         self.assertIn("| A/LSHIFT | MAIN | 25 | 260 | 0 | 1 |", text)
         self.assertIn("| SPACE/SYMBOL | MAIN | 58 | 160 | 0 | 1 |", text)
         self.assertIn("| EXCL | SYMBOL | 13 | 1 |", text)
+
+    def test_outer_shift_is_not_a_home_row_hold(self) -> None:
+        # Outer Shift (36) pressed while A is still going down: Shift comes from 36, A is a tap
+        events = [
+            (POS, 1, 25, 255, 0, 1000),
+            (POS, 1, 36, 255, 0, 1007),
+            (KEY, 1, 7, 0, LSHIFT, 1008),
+            (POS, 0, 25, 255, 0, 1015),
+            (KEY, 1, 7, 0x02, 4, 1016),
+            (KEY, 0, 7, 0x02, 4, 1017),
+            (POS, 0, 36, 255, 0, 1200),
+            (KEY, 0, 7, 0, LSHIFT, 1201),
+        ]
+        with tempfile.TemporaryDirectory() as tmp:
+            db = Path(tmp) / "keylog.sqlite"
+            write_db(db, events)
+            sessions, gaps = analyze.load(db, None)
+        text = analyze.report(sessions, gaps, self.keymap)
+        self.assertIn("| A/LSHIFT | MAIN | 25 | 260 | 1 | 0 |", text)
 
     def test_merge_streams_dedupes_usb_and_bluetooth(self) -> None:
         # (session, kind, flags, a, b, c, kb_ms, app, host_time)

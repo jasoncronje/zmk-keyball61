@@ -74,6 +74,11 @@ SHIFTED = {
 }
 
 
+def is_text(code: int) -> bool:
+    """Letters, digits, space and punctuation: keys that type a character."""
+    return 0x04 <= code <= 0x27 or 0x2C <= code <= 0x38
+
+
 def key_name(page: int, code: int, mods: int = 0) -> str:
     if page != PAGE_KEY:
         return f"media:{code:#x}"
@@ -383,7 +388,7 @@ def report(sessions: list[Session], gaps: Counter, keymap: Keymap) -> str:
                 before = ks[run_start - 1]
                 gone = key_name(before.page, before.code, before.mods)
                 deleted[gone] += 1
-                if run == 1 and i < len(ks):
+                if run == 1 and i < len(ks) and is_text(ks[i].code):
                     fixes[(gone, key_name(ks[i].page, ks[i].code, ks[i].mods))] += 1
     total_bs = sum(runs.values())
     lengths = ", ".join(f"{n}{'+' if n == 6 else ''} long: {c}" for n, c in sorted(runs.items()))
@@ -410,20 +415,28 @@ def report(sessions: list[Session], gaps: Counter, keymap: Keymap) -> str:
         hold_param, tap_param = binding.params[0], binding.params[1]
         hold_code = KEY_CODES.get(hold_param) if ht.hold == "kp" else None
         hold_layer = int(hold_param) if ht.hold == "mo" and hold_param.isdigit() else None
+        # Plain keys sending the same modifier (the outer Shift), so their keycode isn't read as this key's hold
+        same_mod = {q for q in range(61) if hold_code is not None and keymap.binding(layer, q).behavior == "kp"
+                    and KEY_CODES.get(keymap.binding(layer, q).params[0]) == hold_code}
         taps, holds = [], []
         for session in sessions:
+            plain = [q.down for q in session.presses if q.position in same_mod]
             for i, p in enumerate(session.presses):
                 if p.position != pos or p.layer != layer or p.up is None:
                     continue
                 held = p.up - p.down
-                is_hold = (hold_code is not None and any(c == hold_code for _, _, c, _ in p.keycodes)) or (
+                is_hold = (hold_code is not None and any(
+                    c == hold_code and not any(0 <= ms - d <= 5 for d in plain) for ms, _, c, _ in p.keycodes)) or (
                     hold_layer is not None and hold_layer in p.layers_on)
                 (holds if is_hold else taps).append(held)
                 if is_hold and held < ht.tapping_term:
                     nxt = session.presses[i + 1] if i + 1 < len(session.presses) else None
                     if nxt and nxt.up is not None and nxt.up <= p.up and p.up - nxt.up < 60:
+                        # require-prior-idle-ms counts from the last non-modifier key sent
+                        prior = [k.ms for k in session.keys if k.ms < p.down and k.page == PAGE_KEY and is_text(k.code)]
+                        idle = f"{p.down - prior[-1]} ms after the previous key, " if prior else ""
                         misfires.append(f"{keymap.label(pos, layer)} → {keymap.label(nxt.position, layer)} "
-                                        f"(held {held} ms, other key released {p.up - nxt.up} ms before)")
+                                        f"({idle}held {held} ms, other key released {p.up - nxt.up} ms before)")
         if not taps and not holds:
             continue
         rows.append([
