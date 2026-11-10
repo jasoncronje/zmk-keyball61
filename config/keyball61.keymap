@@ -29,10 +29,13 @@
 #define KEYS_R 6  7  8  9  10 11 18 19 20 21 22 23 30 31 32 33 34 35 43 44 45 46 47 48 49 59 60
 #define THUMBS 54 55 56 57 58
 
+// Tap-preferred: a Space released before 160 ms is always Space (rolls into the next word typed @ < &).
+// retro-tap keeps a long Space with nothing pressed during it as Space.
 &lt {
     tapping-term-ms = <160>;
-    flavor = "balanced";
+    flavor = "tap-preferred";
     quick-tap-ms = <150>;
+    retro-tap;
 };
 
 &mt {
@@ -187,7 +190,7 @@
             flavor = "balanced";
             tapping-term-ms = <260>;
             quick-tap-ms = <175>;
-            require-prior-idle-ms = <125>;
+            require-prior-idle-ms = <175>;
             hold-trigger-key-positions = <KEYS_R THUMBS>;
             hold-trigger-on-release;
         };
