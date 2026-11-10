@@ -220,17 +220,62 @@ class Session:
     layer_on: list[tuple[int, int]] = field(default_factory=list)  # (ms, layer)
 
 
+def merge_streams(rows: list[tuple]) -> list[tuple]:
+    """One stream per keyboard boot, whichever links it came over.
+
+    With USB plugged in the keyboard sends every record over USB and Bluetooth
+    at once, and keylogd saves each link as its own session. Sessions that
+    overlap in time are the same stream: keep the fullest one and add only the
+    records it is missing (one link can lose reports the other delivered),
+    ordered by the keyboard's own clock. Rows come back keyed by the group's
+    first session.
+    """
+    by_session: dict[int, list[tuple]] = defaultdict(list)
+    spans: dict[int, list[float]] = {}
+    for row in rows:
+        session, host_time = row[0], row[-1]
+        by_session[session].append(row)
+        span = spans.setdefault(session, [host_time, host_time])
+        span[0], span[1] = min(span[0], host_time), max(span[1], host_time)
+
+    groups: list[list[int]] = []
+    group_end = None
+    for session in sorted(spans, key=lambda s: spans[s][0]):
+        if groups and spans[session][0] <= group_end:
+            groups[-1].append(session)
+            group_end = max(group_end, spans[session][1])
+        else:
+            groups.append([session])
+            group_end = spans[session][1]
+
+    merged: list[tuple] = []
+    for group in groups:
+        group.sort(key=lambda s: len(by_session[s]), reverse=True)
+        seen: set[tuple] = set()
+        records: list[tuple] = []
+        for session in group:
+            for row in by_session[session]:
+                key = row[1:7]  # kind, flags, a, b, c, kb_ms
+                if key not in seen:
+                    seen.add(key)
+                    records.append(row)
+        records.sort(key=lambda row: row[6])  # stable: the fullest stream's order wins ties
+        lead = min(group)
+        merged += [(lead, *row[1:]) for row in records]
+    return merged
+
+
 def load(db: Path, since: float | None) -> tuple[list[Session], Counter]:
     con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
     where = "WHERE host_time >= ?" if since else ""
-    rows = con.execute(
-        f"SELECT session, kind, flags, a, b, c, kb_ms, app FROM events {where} ORDER BY session, id",
+    rows = merge_streams(con.execute(
+        f"SELECT session, kind, flags, a, b, c, kb_ms, app, host_time FROM events {where} ORDER BY session, id",
         (since,) if since else (),
-    )
+    ).fetchall())
     sessions: dict[int, Session] = defaultdict(Session)
     open_presses: dict[tuple[int, int], Press] = {}
     highest: dict[int, int] = defaultdict(int)
-    for session_id, kind, flags, a, b, c, ms, app in rows:
+    for session_id, kind, flags, a, b, c, ms, app, _ in rows:
         session = sessions[session_id]
         pressed = bool(flags & 1)
         if kind == POSITION:
@@ -259,8 +304,10 @@ def load(db: Path, since: float | None) -> tuple[list[Session], Counter]:
                 for (owner, _), press in open_presses.items():
                     if owner == session_id:
                         press.layers_on.append(a)
+    # Secure input is the Mac's state, not a link's; count each change once
     gaps = Counter(reason.split(":")[0] for (reason,) in con.execute(
-        f"SELECT reason FROM gaps {where}", (since,) if since else ()))
+        f"SELECT reason FROM gaps {where} GROUP BY reason, CAST(host_time AS INTEGER)",
+        (since,) if since else ()))
     return list(sessions.values()), gaps
 
 
@@ -289,7 +336,7 @@ def report(sessions: list[Session], gaps: Counter, keymap: Keymap) -> str:
     out.append(table(["Measure", "Value"], [
         ["Key presses", len(presses)],
         ["Keycodes sent", len(keys)],
-        ["Sessions", len(sessions)],
+        ["Streams (keyboard boots, links merged)", len(sessions)],
         ["Top apps", ", ".join(f"{a} ({n})" for a, n in apps.most_common(3)) or "-"],
         ["Gaps", ", ".join(f"{r} ×{n}" for r, n in gaps.most_common()) or "none"],
     ]))

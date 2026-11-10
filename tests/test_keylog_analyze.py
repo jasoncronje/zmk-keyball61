@@ -108,6 +108,17 @@ class KeylogAnalyzeTest(unittest.TestCase):
         self.assertIn("| SPACE/SYMBOL | MAIN | 58 | 160 | 0 | 1 |", text)
         self.assertIn("| EXCL | SYMBOL | 13 | 1 |", text)
 
+    def test_merge_streams_dedupes_usb_and_bluetooth(self) -> None:
+        # (session, kind, flags, a, b, c, kb_ms, app, host_time)
+        usb = [(5, POS, 1, 17, 255, 0, 1000, None, 10.0), (5, KEY, 1, 7, 0, T, 1001, None, 10.0)]
+        # Bluetooth delivered the same records plus one USB missed, and started earlier
+        ble = [(4, LAYER, 1, 3, 3, 0b1001, 900, None, 9.0)] + [(4, *row[1:]) for row in usb] + [
+            (4, POS, 0, 17, 255, 0, 1080, None, 10.1)]
+        later = [(6, POS, 1, 18, 255, 0, 50, None, 100.0)]  # after a keyboard reboot
+        merged = analyze.merge_streams(ble + usb + later)
+        self.assertEqual([(row[0], row[1], row[6]) for row in merged],
+                         [(4, LAYER, 900), (4, POS, 1000), (4, KEY, 1001), (4, POS, 1080), (6, POS, 50)])
+
 
 if __name__ == "__main__":
     unittest.main()
