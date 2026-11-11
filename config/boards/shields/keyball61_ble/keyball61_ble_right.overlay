@@ -120,7 +120,8 @@ nice_view_spi: &spi0 {
       compatible = "zmk,input-processor-temp-layer";
       #input-processor-cells = <2>;
       require-prior-idle-ms = <150>;
-      excluded-positions = <20 31 32 33 34 46>;
+      // 0 too: the MOUSE layer's &to DEFAULT there must resolve before this processor drops the layer.
+      excluded-positions = <0 20 31 32 33 34 46>;
     };
   };
 
