@@ -250,8 +250,9 @@
 
         mouse_layer {
             label = "MOUSE";
+            // Escape leaves the auto-mouse layer instead of typing Escape.
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &trans          &trans     &trans  &trans
+&to DEFAULT  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &trans          &trans     &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &mo 4           &trans     &trans  &trans
 &trans  &kp LSHIFT  &kp LCTRL  &kp LALT  &kp LGUI  &trans       &trans  &mkp LCLK  &mo_mkp 4 MCLK  &mkp RCLK  &mo 4   &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans     &mo 4           &trans     &trans  &trans
