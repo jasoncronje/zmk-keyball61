@@ -15,6 +15,9 @@ manifest:
       # v0.3.0 plus CONFIG_ZMK_BLE_MOUSE_REPORT_COALESCE (one BLE mouse report per interval,
       # movement merged meanwhile). Off unless a shield's .conf turns it on.
       remote: jasoncronje
+      # The fork's patch sits on this upstream release. Renovate bumps it when ZMK releases;
+      # rebase the fork branch onto the new tag before merging that PR.
+      # renovate-base: datasource=github-tags depName=zmkfirmware/zmk currentValue=v0.3.0
       # renovate: datasource=git-refs depName=jasoncronje/zmk currentValue=keyball61/hog-mouse-coalesce
       revision: 517b247166187454714d3b3d591739f8cbc16653
       import: app/west.yml
